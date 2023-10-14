@@ -9,8 +9,8 @@ namespace SistemaLirios.Data.Map
         public void Configure(EntityTypeBuilder<ClienteModel> builder)
         {
             builder.HasKey(x => x.Id);
-            builder.Property(x => x.Nome).IsRequired().HasMaxLength(500);
-            builder.Property(x => x.Email).HasMaxLength(500);
+            builder.Property(x => x.Nome).IsRequired().HasMaxLength(255);
+            builder.Property(x => x.Email).HasMaxLength(255);
             builder.Property(x => x.Celular).IsRequired();
             builder.Property(x => x.CEP).IsRequired();
             builder.Property(x => x.Endereco).IsRequired().HasMaxLength(1000);
