@@ -9,7 +9,7 @@ namespace SistemaLirios.Data.Map
         public void Configure(EntityTypeBuilder<ProdutoModel> builder)
         {
             builder.HasKey(x => x.Id);
-            builder.Property(x => x.Nome).IsRequired().HasMaxLength(500);
+            builder.Property(x => x.Nome).IsRequired().HasMaxLength(455);
             builder.Property(x => x.CodigoOrigem).IsRequired();
             builder.Property(x => x.Codigo).IsRequired().HasMaxLength(15);
             builder.Property(x => x.CodigoDeBarra);
