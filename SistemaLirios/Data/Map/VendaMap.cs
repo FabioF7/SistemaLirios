@@ -11,8 +11,8 @@ namespace SistemaLirios.Data.Map
             builder.HasKey(x => x.Id);
             builder.Property(x => x.ValorVenda).IsRequired();
             builder.Property(x => x.DtVenda).IsRequired();
-            builder.Property(x => x.IdCliente).IsRequired();
-            builder.Property(x => x.IdProduto).IsRequired();
+            builder.Property(x => x.ClienteId).IsRequired();
+            builder.Property(x => x.ProdutoId).IsRequired();
             builder.Property(x => x.CustoProduto).IsRequired();
             builder.Property(x => x.MetodoPagamento).IsRequired();
             builder.Property(x => x.Tipo).IsRequired();
@@ -21,6 +21,9 @@ namespace SistemaLirios.Data.Map
             builder.Property(x => x.PreVenda).IsRequired();
             builder.Property(x => x.AlteradoPor).HasMaxLength(55);
             builder.Property(x => x.DtAlteracao);
+
+            builder.HasOne(x => x.Cliente);
+            builder.HasOne(x => x.Produto);
         }
     }
 }

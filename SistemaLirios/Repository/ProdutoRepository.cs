@@ -58,7 +58,7 @@ namespace SistemaLirios.Repository
             }
 
             produtoPorId.Nome = produto.Nome;
-            produtoPorId.CodigoOrigem = produto.CodigoOrigem;
+            produtoPorId.OrigemId = produto.OrigemId;
             produtoPorId.Codigo = produto.Codigo;
             produtoPorId.CodigoDeBarra = produto.CodigoDeBarra;
             produtoPorId.ValorCusto = produto.ValorCusto;
