@@ -9,7 +9,7 @@ namespace SistemaLirios.Data.Map
         public void Configure(EntityTypeBuilder<ServicoModel> builder)
         {
             builder.HasKey(x => x.Id);
-            builder.Property(x => x.IdTipo).IsRequired();
+            builder.Property(x => x.TipoServicoId).IsRequired();
             builder.Property(x => x.Nome).IsRequired().HasMaxLength(255);
             builder.Property(x => x.Valor).IsRequired();
             builder.Property(x => x.Ativo).IsRequired();
@@ -18,6 +18,7 @@ namespace SistemaLirios.Data.Map
             builder.Property(x => x.AlteradoPor).HasMaxLength(55);
             builder.Property(x => x.DtAlteracao);
 
+            builder.HasOne(x => x.TipoServico);
         }
     }
 }

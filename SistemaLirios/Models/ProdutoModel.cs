@@ -6,7 +6,8 @@ namespace SistemaLirios.Models
     {
         public int Id { get; set; }
         public string? Nome { get; set; }
-        public int CodigoOrigem { get; set; }
+        public int OrigemId { get; set; }
+        public virtual OrigemModel? Origem { get; set; }
         public string? Codigo { get; set; }
         public int CodigoDeBarra { get; set; }
         public float ValorCusto { get; set; }

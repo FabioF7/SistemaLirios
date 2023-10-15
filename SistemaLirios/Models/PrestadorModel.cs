@@ -7,7 +7,8 @@ namespace SistemaLirios.Models
 
         public int Id { get; set; }
         public string? Nome { get; set; }
-        public int IdTipo { get; set; }
+        public int TipoServicoId { get; set; }
+        public virtual TipoServicoModel? TipoServico { get; set; }
         public string? Local { get; set; }
         public int Ativo { get; set; }
         public DateTime DtCadastro { get; set; }
