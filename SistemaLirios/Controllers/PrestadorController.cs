@@ -4,7 +4,9 @@ using SistemaLirios.Repository.Interfaces;
 
 namespace SistemaLirios.Controllers
 {
-    public class PrestadorController
+    [Route("api/[controller]")]
+    [ApiController]
+    public class PrestadorController : ControllerBase
     {
         private readonly IPrestadorRepository _prestadorRepository;
         public PrestadorController(IPrestadorRepository prestadorRepository)
@@ -32,7 +34,7 @@ namespace SistemaLirios.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<ActionResult<PrestadorModel>> Update([FromBody] PrestadorModel prestador, int id)
+        public async Task<ActionResult<PrestadorModel>> Update(int id, [FromBody] PrestadorModel prestador)
         {
             throw new NotImplementedException();
         }

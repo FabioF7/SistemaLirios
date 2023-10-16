@@ -6,8 +6,6 @@ using SistemaLirios.Models;
 
 namespace SistemaLirios.Data
 {
-    [Route("api/[controller]")]
-    [ApiController]
     public class SistemaLiriosDBContext : DbContext
     {
         public SistemaLiriosDBContext(DbContextOptions<SistemaLiriosDBContext> options) 
@@ -29,6 +27,11 @@ namespace SistemaLirios.Data
             modelBuilder.ApplyConfiguration(new ProdutoMap());
             modelBuilder.ApplyConfiguration(new ClienteMap());
             modelBuilder.ApplyConfiguration(new VendaMap());
+            modelBuilder.ApplyConfiguration(new GastosMap());
+            modelBuilder.ApplyConfiguration(new OrigemMap());
+            modelBuilder.ApplyConfiguration(new PrestadorMap());
+            modelBuilder.ApplyConfiguration(new ServicoMap());
+            modelBuilder.ApplyConfiguration(new TipoServicoMap());
 
             base.OnModelCreating(modelBuilder);
         }

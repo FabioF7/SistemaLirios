@@ -6,6 +6,7 @@
         Dinheiro = 1,
         Pix = 2,
         Debito = 3,
-        Credito = 4
+        CreditoAVista = 4,
+        CreditoParcelado = 5
     }
 }

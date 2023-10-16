@@ -11,7 +11,7 @@ namespace SistemaLirios.Controllers
         [HttpGet]
         public ActionResult<List<ProdutoModel>> BuscarTodosProdutos()
         {
-            return Ok();
+            throw new NotImplementedException();
         }
     }
 }

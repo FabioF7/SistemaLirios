@@ -6,7 +6,9 @@ using SistemaLirios.Repository.Interfaces;
 
 namespace SistemaLirios.Controllers
 {
-    public class GastosController
+    [Route("api/[controller]")]
+    [ApiController]
+    public class GastosController : ControllerBase
     {
         private readonly IGastosRepository _gastosRepository;
         public GastosController(IGastosRepository gastosRepository)
@@ -20,9 +22,9 @@ namespace SistemaLirios.Controllers
             throw new NotImplementedException();
         }
 
-        
-        [HttpGet("BuscarPorData")]
-        public async Task<ActionResult<GastosModel>> BuscarPorData(DateTime dataInicio, DateTime dataFim)
+
+        [HttpGet("{Data}")]
+        public async Task<ActionResult<GastosModel>> BuscarPorData(DateTime Data)
         {
             throw new NotImplementedException();
         }
@@ -34,7 +36,7 @@ namespace SistemaLirios.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<ActionResult<GastosModel>> Update([FromBody] GastosModel gastos, int id)
+        public async Task<ActionResult<GastosModel>> Update(int id, [FromBody] GastosModel gastos)
         {
             throw new NotImplementedException();
         }

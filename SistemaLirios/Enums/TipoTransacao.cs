@@ -2,7 +2,7 @@
 {
     public enum TipoTransacao
     {
-        Venda = 1,
-        Devolucao = 2
+        Venda = 0,
+        Devolucao = 1
     }
 }

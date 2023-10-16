@@ -4,7 +4,9 @@ using SistemaLirios.Repository.Interfaces;
 
 namespace SistemaLirios.Controllers
 {
-    public class TipoServicoController
+    [Route("api/[controller]")]
+    [ApiController]
+    public class TipoServicoController : ControllerBase
     {
         private readonly ITipoServicoRepository _tipoServicoRepository;
         public TipoServicoController(ITipoServicoRepository tipoServicoRepository)
@@ -32,7 +34,7 @@ namespace SistemaLirios.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<ActionResult<TipoServicoModel>> Update([FromBody] TipoServicoModel tipoServico, int id)
+        public async Task<ActionResult<TipoServicoModel>> Update(int id, [FromBody] TipoServicoModel tipoServico)
         {
             throw new NotImplementedException();
         }

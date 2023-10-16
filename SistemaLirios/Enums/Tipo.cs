@@ -2,7 +2,7 @@
 {
     public enum Tipo
     {
-        Produto = 1,
-        Servico = 2
+        Produto = 0,
+        Servico = 1
     }
 }

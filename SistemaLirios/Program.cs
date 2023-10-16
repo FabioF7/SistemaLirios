@@ -27,6 +27,11 @@ namespace SistemaLirios
             builder.Services.AddScoped<IProdutoRepository, ProdutoRepository>();
             builder.Services.AddScoped<IVendaRepository, VendaRepository>();
             builder.Services.AddScoped<IClienteRepository, ClienteRepository>();
+            builder.Services.AddScoped<IGastosRepository, GastosRepository>();
+            builder.Services.AddScoped<IOrigemRepository, OrigemRepository>();
+            builder.Services.AddScoped<IPrestadorRepository, PrestadorRepository>();
+            builder.Services.AddScoped<IServicoRepository, ServicoRepository>();
+            builder.Services.AddScoped<ITipoServicoRepository, TipoServicoRepository>();
 
             var app = builder.Build();
 
