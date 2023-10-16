@@ -1,8 +1,12 @@
-﻿namespace SistemaLirios.Enums
+﻿using System.ComponentModel;
+
+namespace SistemaLirios.Enums
 {
     public enum Sexo
     {
-        Masculino = 1,
-        Feminino = 2
+        [Description("Masculino")]
+        Masculino = 0,
+        [Description("Feminino")]
+        Feminino = 1
     }
 }

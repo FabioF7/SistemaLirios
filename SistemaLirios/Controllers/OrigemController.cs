@@ -4,7 +4,9 @@ using SistemaLirios.Repository.Interfaces;
 
 namespace SistemaLirios.Controllers
 {
-    public class OrigemController
+    [Route("api/[controller]")]
+    [ApiController]
+    public class OrigemController : ControllerBase
     {
         private readonly IOrigemRepository _origemRepository;
         public OrigemController(IOrigemRepository origemRepository)
@@ -25,7 +27,7 @@ namespace SistemaLirios.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<ActionResult<OrigemModel>> Update([FromBody] OrigemModel origem, int id)
+        public async Task<ActionResult<OrigemModel>> Update(int id, [FromBody] OrigemModel origem)
         {
             throw new NotImplementedException();
         }

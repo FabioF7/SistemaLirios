@@ -17,28 +17,28 @@ namespace SistemaLirios.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<ProdutoModel>>> BuscarTodosClientes()
+        public async Task<ActionResult<List<ClienteModel>>> BuscarTodosClientes()
         {
             List<ClienteModel> clientes = await _clienteRepository.BuscarTodosClientes();
             return Ok(clientes);
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<ProdutoModel>> BuscarPorId(int id)
+        public async Task<ActionResult<ClienteModel>> BuscarPorId(int id)
         {
             ClienteModel cliente = await _clienteRepository.BuscarPorId(id);
             return Ok(cliente);
         }
 
         [HttpPost]
-        public async Task<ActionResult<ProdutoModel>> Insert([FromBody] ClienteModel clienteModel)
+        public async Task<ActionResult<ClienteModel>> Insert([FromBody] ClienteModel clienteModel)
         {
             ClienteModel cliente = await _clienteRepository.Insert(clienteModel);
             return Ok(cliente);
         }
 
         [HttpPut("{id}")]
-        public async Task<ActionResult<ProdutoModel>> Update([FromBody] ClienteModel clienteModel, int id)
+        public async Task<ActionResult<ClienteModel>> Update(int id, [FromBody] ClienteModel clienteModel)
         {
             clienteModel.Id = id;
             ClienteModel cliente = await _clienteRepository.Update(clienteModel, id);
@@ -46,7 +46,7 @@ namespace SistemaLirios.Controllers
         }
 
         [HttpDelete("{id}")]
-        public async Task<ActionResult<ProdutoModel>> Delete(int id)
+        public async Task<ActionResult<ClienteModel>> Delete(int id)
         {
             bool sucesso = await _clienteRepository.Delete(id);
             return Ok(sucesso);

@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SistemaLirios.Models;
+using SistemaLirios.Repository.Interfaces;
 
 namespace SistemaLirios.Controllers
 {
@@ -8,8 +9,13 @@ namespace SistemaLirios.Controllers
     [ApiController]
     public class VendaController : ControllerBase
     {
+        private readonly IVendaRepository _vendaRepository;
+        public VendaController(IVendaRepository vendaRepository)
+        {
+            _vendaRepository = vendaRepository;
+        }
         [HttpGet]
-        public ActionResult<List<ProdutoModel>> BuscarTodosVendas()
+        public ActionResult<List<VendaModel>> BuscarTodosVendas()
         {
             return Ok();
         }

@@ -1,6 +1,4 @@
-﻿using System.Drawing;
-
-namespace SistemaLirios.Models
+﻿namespace SistemaLirios.Models
 {
     public class GastosModel
     {

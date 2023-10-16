@@ -1,6 +1,4 @@
-﻿using SistemaLirios.Enums;
-
-namespace SistemaLirios.Models
+﻿namespace SistemaLirios.Models
 {
     public class ProdutoModel
     {
