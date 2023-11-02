@@ -12,7 +12,7 @@ namespace SistemaLirios.Data.Map
             builder.Property(x => x.Nome).IsRequired().HasMaxLength(255);
             builder.Property(x => x.Email).HasMaxLength(255);
             builder.Property(x => x.Celular).IsRequired();
-            builder.Property(x => x.CEP).IsRequired();
+            builder.Property(x => x.CEP).IsRequired().HasMaxLength(8);
             builder.Property(x => x.Endereco).IsRequired().HasMaxLength(1000);
             builder.Property(x => x.DtNascimento).IsRequired();
             builder.Property(x => x.Sexo).IsRequired();

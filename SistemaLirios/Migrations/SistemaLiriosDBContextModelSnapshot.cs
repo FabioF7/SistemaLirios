@@ -17,18 +17,18 @@ namespace SistemaLirios.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "6.0.0")
+                .HasAnnotation("ProductVersion", "7.0.13")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
-            SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
+            SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
             modelBuilder.Entity("SistemaLirios.Models.ClienteModel", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int?>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int?>("Id"));
 
                     b.Property<string>("AlteradoPor")
                         .HasMaxLength(55)
@@ -37,21 +37,24 @@ namespace SistemaLirios.Migrations
                     b.Property<int>("Bloqueado")
                         .HasColumnType("int");
 
-                    b.Property<int>("CEP")
-                        .HasColumnType("int");
+                    b.Property<string>("CEP")
+                        .IsRequired()
+                        .HasMaxLength(8)
+                        .HasColumnType("nvarchar(8)");
 
                     b.Property<string>("CadastradoPor")
                         .IsRequired()
                         .HasMaxLength(55)
                         .HasColumnType("nvarchar(55)");
 
-                    b.Property<int>("Celular")
-                        .HasColumnType("int");
+                    b.Property<long>("Celular")
+                        .HasColumnType("bigint");
 
-                    b.Property<DateTime>("DtAlteracao")
+                    b.Property<DateTime?>("DtAlteracao")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime>("DtCadastro")
+                    b.Property<DateTime?>("DtCadastro")
+                        .IsRequired()
                         .HasColumnType("datetime2");
 
                     b.Property<DateTime>("DtNascimento")
@@ -66,7 +69,7 @@ namespace SistemaLirios.Migrations
                         .HasMaxLength(1000)
                         .HasColumnType("nvarchar(1000)");
 
-                    b.Property<int>("Indicacao")
+                    b.Property<int?>("Indicacao")
                         .HasColumnType("int");
 
                     b.Property<string>("Nome")
@@ -84,26 +87,32 @@ namespace SistemaLirios.Migrations
 
             modelBuilder.Entity("SistemaLirios.Models.GastosModel", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int?>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int?>("Id"));
 
                     b.Property<string>("AlteradoPor")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(55)
+                        .HasColumnType("nvarchar(55)");
 
                     b.Property<string>("CadastradoPor")
-                        .HasColumnType("nvarchar(max)");
+                        .IsRequired()
+                        .HasMaxLength(55)
+                        .HasColumnType("nvarchar(55)");
 
-                    b.Property<DateTime>("DtAlteracao")
+                    b.Property<DateTime?>("DtAlteracao")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime>("DtCadastro")
+                    b.Property<DateTime?>("DtCadastro")
+                        .IsRequired()
                         .HasColumnType("datetime2");
 
                     b.Property<string>("NomeGasto")
-                        .HasColumnType("nvarchar(max)");
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
 
                     b.Property<int>("Recorrente")
                         .HasColumnType("int");
@@ -122,16 +131,19 @@ namespace SistemaLirios.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("AlteradoPor")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(55)
+                        .HasColumnType("nvarchar(55)");
 
                     b.Property<int>("Ativo")
                         .HasColumnType("int");
 
                     b.Property<string>("CadastradoPor")
-                        .HasColumnType("nvarchar(max)");
+                        .IsRequired()
+                        .HasMaxLength(55)
+                        .HasColumnType("nvarchar(55)");
 
                     b.Property<DateTime>("DtAlteracao")
                         .HasColumnType("datetime2");
@@ -140,7 +152,9 @@ namespace SistemaLirios.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Nome")
-                        .HasColumnType("nvarchar(max)");
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
 
                     b.HasKey("Id");
 
@@ -153,16 +167,19 @@ namespace SistemaLirios.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("AlteradoPor")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(55)
+                        .HasColumnType("nvarchar(55)");
 
                     b.Property<int>("Ativo")
                         .HasColumnType("int");
 
                     b.Property<string>("CadastradoPor")
-                        .HasColumnType("nvarchar(max)");
+                        .IsRequired()
+                        .HasMaxLength(55)
+                        .HasColumnType("nvarchar(55)");
 
                     b.Property<DateTime>("DtAlteracao")
                         .HasColumnType("datetime2");
@@ -171,10 +188,14 @@ namespace SistemaLirios.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Local")
-                        .HasColumnType("nvarchar(max)");
+                        .IsRequired()
+                        .HasMaxLength(455)
+                        .HasColumnType("nvarchar(455)");
 
                     b.Property<string>("Nome")
-                        .HasColumnType("nvarchar(max)");
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
 
                     b.Property<int>("TipoServicoId")
                         .HasColumnType("int");
@@ -192,7 +213,7 @@ namespace SistemaLirios.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("AlteradoPor")
                         .HasMaxLength(55)
@@ -253,16 +274,19 @@ namespace SistemaLirios.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("AlteradoPor")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(55)
+                        .HasColumnType("nvarchar(55)");
 
                     b.Property<int>("Ativo")
                         .HasColumnType("int");
 
                     b.Property<string>("CadastradoPor")
-                        .HasColumnType("nvarchar(max)");
+                        .IsRequired()
+                        .HasMaxLength(55)
+                        .HasColumnType("nvarchar(55)");
 
                     b.Property<DateTime>("DtAlteracao")
                         .HasColumnType("datetime2");
@@ -271,7 +295,9 @@ namespace SistemaLirios.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Nome")
-                        .HasColumnType("nvarchar(max)");
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
 
                     b.Property<int>("TipoServicoId")
                         .HasColumnType("int");
@@ -292,16 +318,19 @@ namespace SistemaLirios.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("AlteradoPor")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(55)
+                        .HasColumnType("nvarchar(55)");
 
                     b.Property<int>("Ativo")
                         .HasColumnType("int");
 
                     b.Property<string>("CadastradoPor")
-                        .HasColumnType("nvarchar(max)");
+                        .IsRequired()
+                        .HasMaxLength(55)
+                        .HasColumnType("nvarchar(55)");
 
                     b.Property<DateTime>("DtAlteracao")
                         .HasColumnType("datetime2");
@@ -310,7 +339,9 @@ namespace SistemaLirios.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("NomeTipoServico")
-                        .HasColumnType("nvarchar(max)");
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.HasKey("Id");
 
@@ -323,7 +354,7 @@ namespace SistemaLirios.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("AlteradoPor")
                         .HasMaxLength(55)

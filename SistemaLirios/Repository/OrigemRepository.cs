@@ -1,28 +1,64 @@
-﻿using SistemaLirios.Models;
+﻿using Microsoft.EntityFrameworkCore;
+using SistemaLirios.Data;
+using SistemaLirios.Models;
 using SistemaLirios.Repository.Interfaces;
 
 namespace SistemaLirios.Repository
 {
     public class OrigemRepository : IOrigemRepository
     {
-        public Task<List<OrigemModel>> BuscarTodasOrigens()
+        private readonly SistemaLiriosDBContext _dbContext;
+
+        public OrigemRepository(SistemaLiriosDBContext sistemaLirioDBContext)
         {
-            throw new NotImplementedException();
+            _dbContext = sistemaLirioDBContext;
+        }
+        public async Task<List<OrigemModel>> BuscarTodasOrigens()
+        {
+            return await _dbContext.Origem.ToListAsync();
         }
 
-        public Task<OrigemModel> Insert(OrigemModel Origem)
+        public async Task<OrigemModel> BuscarPorId(int id)
         {
-            throw new NotImplementedException();
+            return await _dbContext.Origem.FirstOrDefaultAsync(x => x.Id == id);
         }
 
-        public Task<OrigemModel> Update(OrigemModel Origem, int id)
+        public async Task<OrigemModel> Insert(OrigemModel Origem)
         {
-            throw new NotImplementedException();
+            await _dbContext.Origem.AddAsync(Origem);
+            await _dbContext.SaveChangesAsync();
+
+            return Origem;
         }
 
-        public Task<bool> Delete(int id)
+        public async Task<OrigemModel> Update(OrigemModel Origem, int id)
         {
-            throw new NotImplementedException();
+            OrigemModel origemPorId = await BuscarPorId(id) ?? throw new Exception($"Origem {id} não encontrado no banco de dados");
+
+            origemPorId.Nome = Origem.Nome;
+            origemPorId.Ativo = Origem.Ativo;
+            origemPorId.DtAlteracao = Origem.DtAlteracao;
+            origemPorId.AlteradoPor = Origem.AlteradoPor;
+
+            _dbContext.Origem.Update(origemPorId);
+            await _dbContext.SaveChangesAsync();
+
+            return origemPorId;
+        }
+
+        public async Task<bool> Delete(int id)
+        {
+            OrigemModel origemPorId = await BuscarPorId(id);
+
+            if (origemPorId == null)
+            {
+                throw new Exception($"Origem {id} não encontrado no banco de dados");
+            }
+
+            _dbContext.Origem.Remove(origemPorId);
+            await _dbContext.SaveChangesAsync();
+
+            return true;
         }
     }
 }

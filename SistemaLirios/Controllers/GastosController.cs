@@ -17,9 +17,10 @@ namespace SistemaLirios.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<GastosModel>>> BuscarTodosGastos()
+        public async Task<ActionResult<List<GastosModel>>> BuscarTodosGastos()  //OK
         {
-            throw new NotImplementedException();
+            List<GastosModel> clientes = await _gastosRepository.BuscarTodosGastos();
+            return Ok(clientes);
         }
 
 
@@ -30,21 +31,25 @@ namespace SistemaLirios.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<GastosModel>> Insert([FromBody] GastosModel gastos)
+        public async Task<ActionResult<GastosModel>> Insert([FromBody] GastosModel gastosModel)  //OK
         {
-            throw new NotImplementedException();
+            GastosModel gastos = await _gastosRepository.Insert(gastosModel);
+            return Ok(gastos);
         }
 
         [HttpPut("{id}")]
-        public async Task<ActionResult<GastosModel>> Update(int id, [FromBody] GastosModel gastos)
+        public async Task<ActionResult<GastosModel>> Update(int id, [FromBody] GastosModel gastosModel)  //OK
         {
-            throw new NotImplementedException();
+            gastosModel.Id = id;
+            GastosModel gastos = await _gastosRepository.Update(gastosModel, id);
+            return Ok(gastos);
         }
 
         [HttpDelete("{id}")]
-        public async Task<ActionResult<GastosModel>> Delete(int id)
+        public async Task<ActionResult<GastosModel>> Delete(int id)  //OK
         {
-            throw new NotImplementedException();
+            bool sucesso = await _gastosRepository.Delete(id);
+            return Ok(sucesso);
         }
     }
 }

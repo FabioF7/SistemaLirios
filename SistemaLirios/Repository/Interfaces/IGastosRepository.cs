@@ -5,6 +5,7 @@ namespace SistemaLirios.Repository.Interfaces
     public interface IGastosRepository
     {
         Task<List<GastosModel>> BuscarTodosGastos();
+        Task<GastosModel> BuscarPorId(int id);
         Task<List<GastosModel>> BuscarPorData(DateTime dataInicio, DateTime dataFim);
 
         Task<GastosModel> Insert(GastosModel Gastos);

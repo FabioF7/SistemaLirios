@@ -34,12 +34,7 @@ namespace SistemaLirios.Repository
 
         public async Task<ClienteModel> Update(ClienteModel Cliente, int id)
         {
-            ClienteModel clientePorId = await BuscarPorId(id);
-
-            if (clientePorId == null)
-            {
-                throw new Exception($"Cliente {id} não encontrado no banco de dados");
-            }
+            ClienteModel clientePorId = await BuscarPorId(id) ?? throw new Exception($"Cliente {id} não encontrado no banco de dados");
 
             clientePorId.Nome = Cliente.Nome;
             clientePorId.Email = Cliente.Email;

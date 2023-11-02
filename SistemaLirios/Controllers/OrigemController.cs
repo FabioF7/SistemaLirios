@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using SistemaLirios.Models;
+using SistemaLirios.Repository;
 using SistemaLirios.Repository.Interfaces;
 
 namespace SistemaLirios.Controllers
@@ -17,25 +18,30 @@ namespace SistemaLirios.Controllers
         [HttpGet]
         public async Task<ActionResult<List<OrigemModel>>> BuscarTodasOrigens()
         {
-            throw new NotImplementedException();
+            List<OrigemModel> origem = await _origemRepository.BuscarTodasOrigens();
+            return Ok(origem);
         }
 
         [HttpPost]
-        public async Task<ActionResult<OrigemModel>> Insert([FromBody] OrigemModel origem)
+        public async Task<ActionResult<OrigemModel>> Insert([FromBody] OrigemModel origemModel)
         {
-            throw new NotImplementedException();
+            OrigemModel origem = await _origemRepository.Insert(origemModel);
+            return Ok(origem);
         }
 
         [HttpPut("{id}")]
-        public async Task<ActionResult<OrigemModel>> Update(int id, [FromBody] OrigemModel origem)
+        public async Task<ActionResult<OrigemModel>> Update(int id, [FromBody] OrigemModel origemModel)
         {
-            throw new NotImplementedException();
+            origemModel.Id = id;
+            OrigemModel origem = await _origemRepository.Update(origemModel, id);
+            return Ok(origem);
         }
 
         [HttpDelete("{id}")]
         public async Task<ActionResult<OrigemModel>> Delete(int id)
         {
-            throw new NotImplementedException();
+            bool sucesso = await _origemRepository.Delete(id);
+            return Ok(sucesso);
         }
     }
 }

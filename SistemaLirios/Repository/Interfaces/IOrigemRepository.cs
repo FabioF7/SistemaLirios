@@ -5,6 +5,7 @@ namespace SistemaLirios.Repository.Interfaces
     public interface IOrigemRepository
     {
         Task<List<OrigemModel>> BuscarTodasOrigens();
+        Task<OrigemModel> BuscarPorId(int id);
 
         Task<OrigemModel> Insert(OrigemModel Origem);
 
