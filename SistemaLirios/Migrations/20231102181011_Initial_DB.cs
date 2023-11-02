@@ -5,8 +5,10 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace SistemaLirios.Migrations
 {
-    public partial class InitialDB : Migration
+    /// <inheritdoc />
+    public partial class Initial_DB : Migration
     {
+        /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
@@ -17,17 +19,17 @@ namespace SistemaLirios.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Nome = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
                     Email = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
-                    Celular = table.Column<int>(type: "int", nullable: false),
-                    CEP = table.Column<int>(type: "int", nullable: false),
+                    Celular = table.Column<long>(type: "bigint", nullable: false),
+                    CEP = table.Column<string>(type: "nvarchar(8)", maxLength: 8, nullable: false),
                     Endereco = table.Column<string>(type: "nvarchar(1000)", maxLength: 1000, nullable: false),
                     DtNascimento = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Sexo = table.Column<int>(type: "int", nullable: false),
-                    Indicacao = table.Column<int>(type: "int", nullable: false),
+                    Indicacao = table.Column<int>(type: "int", nullable: true),
                     Bloqueado = table.Column<int>(type: "int", nullable: false),
                     CadastradoPor = table.Column<string>(type: "nvarchar(55)", maxLength: 55, nullable: false),
                     DtCadastro = table.Column<DateTime>(type: "datetime2", nullable: false),
                     AlteradoPor = table.Column<string>(type: "nvarchar(55)", maxLength: 55, nullable: true),
-                    DtAlteracao = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    DtAlteracao = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -40,13 +42,13 @@ namespace SistemaLirios.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    NomeGasto = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    NomeGasto = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
                     Valor = table.Column<float>(type: "real", nullable: false),
                     Recorrente = table.Column<int>(type: "int", nullable: false),
                     DtCadastro = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    CadastradoPor = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    DtAlteracao = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    AlteradoPor = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    CadastradoPor = table.Column<string>(type: "nvarchar(55)", maxLength: 55, nullable: false),
+                    DtAlteracao = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    AlteradoPor = table.Column<string>(type: "nvarchar(55)", maxLength: 55, nullable: true)
                 },
                 constraints: table =>
                 {
@@ -59,12 +61,12 @@ namespace SistemaLirios.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Nome = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Nome = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
                     Ativo = table.Column<int>(type: "int", nullable: false),
                     DtCadastro = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    CadastradoPor = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CadastradoPor = table.Column<string>(type: "nvarchar(55)", maxLength: 55, nullable: false),
                     DtAlteracao = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    AlteradoPor = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    AlteradoPor = table.Column<string>(type: "nvarchar(55)", maxLength: 55, nullable: true)
                 },
                 constraints: table =>
                 {
@@ -72,23 +74,21 @@ namespace SistemaLirios.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Prestador",
+                name: "TipoServico",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Nome = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    IdTipo = table.Column<int>(type: "int", nullable: false),
-                    Local = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    NomeTipoServico = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     Ativo = table.Column<int>(type: "int", nullable: false),
                     DtCadastro = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    CadastradoPor = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CadastradoPor = table.Column<string>(type: "nvarchar(55)", maxLength: 55, nullable: false),
                     DtAlteracao = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    AlteradoPor = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    AlteradoPor = table.Column<string>(type: "nvarchar(55)", maxLength: 55, nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Prestador", x => x.Id);
+                    table.PrimaryKey("PK_TipoServico", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -98,7 +98,7 @@ namespace SistemaLirios.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Nome = table.Column<string>(type: "nvarchar(455)", maxLength: 455, nullable: false),
-                    CodigoOrigem = table.Column<int>(type: "int", nullable: false),
+                    OrigemId = table.Column<int>(type: "int", nullable: false),
                     Codigo = table.Column<string>(type: "nvarchar(15)", maxLength: 15, nullable: false),
                     CodigoDeBarra = table.Column<int>(type: "int", nullable: false),
                     ValorCusto = table.Column<float>(type: "real", nullable: false),
@@ -114,6 +114,38 @@ namespace SistemaLirios.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Produto", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Produto_Origem_OrigemId",
+                        column: x => x.OrigemId,
+                        principalTable: "Origem",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Prestador",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Nome = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
+                    TipoServicoId = table.Column<int>(type: "int", nullable: false),
+                    Local = table.Column<string>(type: "nvarchar(455)", maxLength: 455, nullable: false),
+                    Ativo = table.Column<int>(type: "int", nullable: false),
+                    DtCadastro = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    CadastradoPor = table.Column<string>(type: "nvarchar(55)", maxLength: 55, nullable: false),
+                    DtAlteracao = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    AlteradoPor = table.Column<string>(type: "nvarchar(55)", maxLength: 55, nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Prestador", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Prestador_TipoServico_TipoServicoId",
+                        column: x => x.TipoServicoId,
+                        principalTable: "TipoServico",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -122,36 +154,24 @@ namespace SistemaLirios.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    IdTipo = table.Column<int>(type: "int", nullable: false),
-                    Nome = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    TipoServicoId = table.Column<int>(type: "int", nullable: false),
+                    Nome = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
                     Valor = table.Column<float>(type: "real", nullable: false),
                     Ativo = table.Column<int>(type: "int", nullable: false),
                     DtCadastro = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    CadastradoPor = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CadastradoPor = table.Column<string>(type: "nvarchar(55)", maxLength: 55, nullable: false),
                     DtAlteracao = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    AlteradoPor = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    AlteradoPor = table.Column<string>(type: "nvarchar(55)", maxLength: 55, nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Servico", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "TipoServico",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    NomeTipoServico = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Ativo = table.Column<int>(type: "int", nullable: false),
-                    DtCadastro = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    CadastradoPor = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    DtAlteracao = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    AlteradoPor = table.Column<string>(type: "nvarchar(max)", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_TipoServico", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Servico_TipoServico_TipoServicoId",
+                        column: x => x.TipoServicoId,
+                        principalTable: "TipoServico",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -162,8 +182,8 @@ namespace SistemaLirios.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     ValorVenda = table.Column<float>(type: "real", nullable: false),
                     DtVenda = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    IdCliente = table.Column<int>(type: "int", nullable: false),
-                    IdProduto = table.Column<int>(type: "int", nullable: false),
+                    ClienteId = table.Column<int>(type: "int", nullable: false),
+                    ProdutoId = table.Column<int>(type: "int", nullable: false),
                     CustoProduto = table.Column<float>(type: "real", nullable: false),
                     MetodoPagamento = table.Column<int>(type: "int", nullable: false),
                     Tipo = table.Column<int>(type: "int", nullable: false),
@@ -176,34 +196,72 @@ namespace SistemaLirios.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Venda", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Venda_Cliente_ClienteId",
+                        column: x => x.ClienteId,
+                        principalTable: "Cliente",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Venda_Produto_ProdutoId",
+                        column: x => x.ProdutoId,
+                        principalTable: "Produto",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Prestador_TipoServicoId",
+                table: "Prestador",
+                column: "TipoServicoId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Produto_OrigemId",
+                table: "Produto",
+                column: "OrigemId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Servico_TipoServicoId",
+                table: "Servico",
+                column: "TipoServicoId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Venda_ClienteId",
+                table: "Venda",
+                column: "ClienteId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Venda_ProdutoId",
+                table: "Venda",
+                column: "ProdutoId");
         }
 
+        /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Cliente");
-
-            migrationBuilder.DropTable(
                 name: "Gastos");
-
-            migrationBuilder.DropTable(
-                name: "Origem");
 
             migrationBuilder.DropTable(
                 name: "Prestador");
 
             migrationBuilder.DropTable(
-                name: "Produto");
+                name: "Servico");
 
             migrationBuilder.DropTable(
-                name: "Servico");
+                name: "Venda");
 
             migrationBuilder.DropTable(
                 name: "TipoServico");
 
             migrationBuilder.DropTable(
-                name: "Venda");
+                name: "Cliente");
+
+            migrationBuilder.DropTable(
+                name: "Produto");
+
+            migrationBuilder.DropTable(
+                name: "Origem");
         }
     }
 }
