@@ -21,7 +21,7 @@ namespace SistemaLirios.Repository
 
         public async Task<ClienteModel> BuscarPorId(int id)
         {
-            return await _dbContext.Cliente.FirstOrDefaultAsync(x => x.Id == id);
+            return await _dbContext.Cliente.FirstOrDefaultAsync(x => x.Id == id) ?? throw new Exception($"Cliente {id} não encontrado no banco de dados");
         }     
 
         public async Task<ClienteModel> Insert(ClienteModel Cliente)
@@ -34,7 +34,7 @@ namespace SistemaLirios.Repository
 
         public async Task<ClienteModel> Update(ClienteModel Cliente, int id)
         {
-            ClienteModel clientePorId = await BuscarPorId(id) ?? throw new Exception($"Cliente {id} não encontrado no banco de dados");
+            ClienteModel clientePorId = await BuscarPorId(id);
 
             clientePorId.Nome = Cliente.Nome;
             clientePorId.Email = Cliente.Email;
@@ -58,11 +58,6 @@ namespace SistemaLirios.Repository
         public async Task<bool> Delete(int id)
         {
             ClienteModel clientePorId = await BuscarPorId(id);
-
-            if (clientePorId == null)
-            {
-                throw new Exception($"Cliente {id} não encontrado no banco de dados");
-            }
 
             _dbContext.Cliente.Remove(clientePorId);
             await _dbContext.SaveChangesAsync();
