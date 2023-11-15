@@ -40,7 +40,7 @@ namespace SistemaLirios.Controllers
             {
                 return BadRequest("Não foi possível incluir origem");
             }
-
+            
             return Ok(origem);
         }
 

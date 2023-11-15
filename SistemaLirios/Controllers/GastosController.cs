@@ -64,7 +64,6 @@ namespace SistemaLirios.Controllers
             {
                 return BadRequest("Não foi possível alterar gasto!");
             }
-
             return Ok(gastos);
         }
 

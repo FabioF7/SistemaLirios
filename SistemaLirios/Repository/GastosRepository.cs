@@ -23,6 +23,7 @@ namespace SistemaLirios.Repository
         {
             return await _dbContext.Gastos.FirstOrDefaultAsync(x => x.Id == id) ?? throw new Exception($"Gasto {id} não encontrado no banco de dados");
         }
+        
         public async Task<List<GastosModel>> BuscarPorData(DateTime dataInicio, DateTime dataFim)
         {
             return await _dbContext.Gastos.Where(x => x.DtCadastro >= dataInicio && x.DtCadastro <= dataFim).ToListAsync();
