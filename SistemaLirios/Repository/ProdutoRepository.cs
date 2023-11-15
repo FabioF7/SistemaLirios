@@ -20,24 +20,26 @@ namespace SistemaLirios.Repository
         }
         public async Task<List<ProdutoModel>> BuscarPorCategoria(int categoria)
         {
-            //return await _dbContext.Produto.FirstOrDefaultAsync(x => x.IdCategoria == categoria);
-            throw new NotImplementedException();
+            var sql = string.Format("select * from Produto where IdCategoria = {0}", categoria) ?? throw new Exception($"Produtos da categoria {categoria} não encontrados no banco de dados");
+
+            return await _dbContext.Produto.FromSqlRaw(sql).ToListAsync();
         }
 
         public async Task<List<ProdutoModel>> BuscarPorOrigem(int origem)
         {
-            //return await _dbContext.Produto.FirstOrDefaultAsync(x => x.CodigoOrigem == origem);
-            throw new NotImplementedException();
+            var sql = string.Format("select * from Produto where OrigemId = {0}", origem) ?? throw new Exception($"Produtos da origem {origem} não encontrados no banco de dados");
+
+            return await _dbContext.Produto.FromSqlRaw(sql).ToListAsync();
         }
 
         public async Task<List<ProdutoModel>> BuscarPorData(DateTime dataInicio, DateTime dataFim)
         {
-            throw new NotImplementedException();
+            return await _dbContext.Produto.Where(x => x.DtCadastro >= dataInicio && x.DtCadastro <= dataFim).ToListAsync();
         }
 
         public async Task<ProdutoModel> BuscarPorId(int id)
         {
-            return await _dbContext.Produto.FirstOrDefaultAsync(x => x.Id == id);
+            return await _dbContext.Produto.FirstOrDefaultAsync(x => x.Id == id) ?? throw new Exception($"Produto {id} não encontrado no banco de dados");
         }
 
         public async Task<ProdutoModel> Insert(ProdutoModel produto)
@@ -51,11 +53,6 @@ namespace SistemaLirios.Repository
         public async Task<ProdutoModel> Update(ProdutoModel produto, int id)
         {
             ProdutoModel produtoPorId = await BuscarPorId(id);
-
-            if (produtoPorId == null)
-            {
-                throw new Exception($"Produto {id} não encontrado no banco de dados");
-            }
 
             produtoPorId.Nome = produto.Nome;
             produtoPorId.OrigemId = produto.OrigemId;
@@ -78,11 +75,6 @@ namespace SistemaLirios.Repository
         public async Task<bool> Delete(int id)
         {
             ProdutoModel produtoPorId = await BuscarPorId(id);
-
-            if (produtoPorId == null)
-            {
-                throw new Exception($"Produto {id} não encontrado no banco de dados");
-            }
 
             _dbContext.Produto.Remove(produtoPorId);
             await _dbContext.SaveChangesAsync();

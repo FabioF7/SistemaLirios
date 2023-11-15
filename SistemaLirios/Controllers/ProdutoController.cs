@@ -1,6 +1,9 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SistemaLirios.Models;
+using SistemaLirios.Repository;
+using SistemaLirios.Repository.Interfaces;
 
 namespace SistemaLirios.Controllers
 {
@@ -8,10 +11,124 @@ namespace SistemaLirios.Controllers
     [ApiController]
     public class ProdutoController : ControllerBase
     {
-        [HttpGet]
-        public ActionResult<List<ProdutoModel>> BuscarTodosProdutos()
+        private readonly IProdutoRepository _produtoRepository;
+        public ProdutoController(IProdutoRepository produtoRepository)
         {
-            throw new NotImplementedException();
+            _produtoRepository = produtoRepository;
         }
+
+        [HttpGet]
+        [Authorize]
+        public async Task<ActionResult<List<ProdutoModel>>> BuscarTodosProdutos()
+        {
+            List<ProdutoModel> produto = await _produtoRepository.BuscarTodosProdutos();
+
+            if (produto == null)
+            {
+                return BadRequest("Nenhum Produto encontrado!");
+            }
+
+            return Ok(produto);
+        }
+
+        [HttpGet("{id}")]
+        [Authorize]
+        public async Task<ActionResult<ProdutoModel>> BuscarPorId(int id)
+        {
+            ProdutoModel produto = await _produtoRepository.BuscarPorId(id);
+
+            if (produto == null)
+            {
+                return BadRequest("Produto não encontrado!");
+            }
+
+            return Ok(produto);
+        }
+
+        [HttpGet("{idCategoria}")]
+        [Authorize]
+        public async Task<ActionResult<List<ProdutoModel>>> BuscarPorCategoria(int idCategoria)
+        {
+            List<ProdutoModel> produto = await _produtoRepository.BuscarPorCategoria(idCategoria);
+
+            if (produto == null)
+            {
+                return BadRequest("Nenhum Produto encontrado!");
+            }
+
+            return Ok(produto);
+        }
+
+        [HttpGet("{idOrigem}")]
+        [Authorize]
+        public async Task<ActionResult<List<ProdutoModel>>> BuscarPorOrigem(int idOrigem)
+        {
+            List<ProdutoModel> produto = await _produtoRepository.BuscarPorOrigem(idOrigem);
+
+            if (produto == null)
+            {
+                return BadRequest("Nenhum Produto encontrado!");
+            }
+
+            return Ok(produto);
+        }
+
+        [HttpGet("{dataInicio}/{dataFim}")]
+        [Authorize]
+        public async Task<ActionResult<ProdutoModel>> BuscarPorData(DateTime dataInicio, DateTime dataFim)
+        {
+            List<ProdutoModel> produto = await _produtoRepository.BuscarPorData(dataInicio, dataFim);
+
+            if (produto == null)
+            {
+                return BadRequest("Nenhum Produto encontrado!");
+            }
+
+            return Ok(produto);
+        }
+
+        [HttpPost]
+        [Authorize]
+        public async Task<ActionResult<ProdutoModel>> Insert([FromBody] ProdutoModel produtoModel)  //OK
+        {
+            ProdutoModel produto = await _produtoRepository.Insert(produtoModel);
+
+            if (produto == null)
+            {
+                return BadRequest("Não foi possível incluir produto!");
+            }
+
+            return Ok(produto);
+        }
+
+        [HttpPut("{id}")]
+        [Authorize]
+        public async Task<ActionResult<ProdutoModel>> Update(int id, [FromBody] ProdutoModel produtoModel)  //OK
+        {
+            produtoModel.Id = id;
+            ProdutoModel produto = await _produtoRepository.Update(produtoModel, id);
+
+            if (produto == null)
+            {
+                return BadRequest("Não foi possível alterar produto!");
+            }
+
+            return Ok(produto);
+        }
+
+        [HttpDelete("{id}")]
+        [Authorize]
+        public async Task<ActionResult<ProdutoModel>> Delete(int id)  //OK
+        {
+            bool sucesso = await _produtoRepository.Delete(id);
+
+            if (!sucesso)
+            {
+                return BadRequest("Não foi possível excluir produto!");
+            }
+
+            return Ok(sucesso);
+        }
+
     }
 }

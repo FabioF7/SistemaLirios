@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using SistemaLirios.Models;
 using SistemaLirios.Repository;
 using SistemaLirios.Repository.Interfaces;
@@ -16,34 +17,75 @@ namespace SistemaLirios.Controllers
         }
 
         [HttpGet]
+        [Authorize]
         public async Task<ActionResult<List<ServicoModel>>> BuscarTodosServicos()
         {
-            throw new NotImplementedException();
+            List<ServicoModel> servico = await _servicoRepository.BuscarTodosServicos();
+
+            if (servico == null)
+            {
+                return BadRequest("Nenhum Servico encontrado!");
+            }
+
+            return Ok(servico);
         }
 
 
-        [HttpGet("{id}")]
+        [HttpGet("{tipo}")]
+        [Authorize]
         public async Task<ActionResult<ServicoModel>> BuscarPorTipo(int tipo)
         {
-            throw new NotImplementedException();
+            List<ServicoModel> servico = await _servicoRepository.BuscarPorTipo(tipo);
+
+            if (servico == null)
+            {
+                return BadRequest("Nenhum Servico encontrado!");
+            }
+
+            return Ok(servico);
         }
 
         [HttpPost]
-        public async Task<ActionResult<ServicoModel>> Insert([FromBody] ServicoModel servico)
+        [Authorize]
+        public async Task<ActionResult<ServicoModel>> Insert([FromBody] ServicoModel servicoModel)
         {
-            throw new NotImplementedException();
+            ServicoModel servico = await _servicoRepository.Insert(servicoModel);
+
+            if (servico == null)
+            {
+                return BadRequest("Não foi possível incluir servico!");
+            }
+
+            return Ok(servico);
         }
 
         [HttpPut("{id}")]
-        public async Task<ActionResult<ServicoModel>> Update(int id, [FromBody] ServicoModel servico)
+        [Authorize]
+        public async Task<ActionResult<ServicoModel>> Update(int id, [FromBody] ServicoModel servicoModel)
         {
-            throw new NotImplementedException();
+            servicoModel.Id = id;
+            ServicoModel servico = await _servicoRepository.Update(servicoModel, id);
+
+            if (servico == null)
+            {
+                return BadRequest("Não foi possível alterar servico!");
+            }
+
+            return Ok(servico);
         }
 
         [HttpDelete("{id}")]
+        [Authorize]
         public async Task<ActionResult<ServicoModel>> Delete(int id)
         {
-            throw new NotImplementedException();
+            bool sucesso = await _servicoRepository.Delete(id);
+
+            if (!sucesso)
+            {
+                return BadRequest("Não foi possível excluir servico!");
+            }
+
+            return Ok(sucesso);
         }
     }
 }

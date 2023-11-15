@@ -6,6 +6,7 @@ namespace SistemaLirios.Repository.Interfaces
     {
         Task<List<ServicoModel>> BuscarTodosServicos();
         Task<List<ServicoModel>> BuscarPorTipo(int tipo);
+        Task<ServicoModel> BuscarPorId(int id);
 
         Task<ServicoModel> Insert(ServicoModel Servico);
         Task<ServicoModel> Update(ServicoModel Servico, int id);

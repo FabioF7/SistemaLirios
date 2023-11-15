@@ -20,7 +20,7 @@ namespace SistemaLirios.Repository
 
         public async Task<OrigemModel> BuscarPorId(int id)
         {
-            return await _dbContext.Origem.FirstOrDefaultAsync(x => x.Id == id);
+            return await _dbContext.Origem.FirstOrDefaultAsync(x => x.Id == id) ?? throw new Exception($"Origem {id} não encontrado no banco de dados");
         }
 
         public async Task<OrigemModel> Insert(OrigemModel Origem)
@@ -33,7 +33,7 @@ namespace SistemaLirios.Repository
 
         public async Task<OrigemModel> Update(OrigemModel Origem, int id)
         {
-            OrigemModel origemPorId = await BuscarPorId(id) ?? throw new Exception($"Origem {id} não encontrado no banco de dados");
+            OrigemModel origemPorId = await BuscarPorId(id);
 
             origemPorId.Nome = Origem.Nome;
             origemPorId.Ativo = Origem.Ativo;
@@ -49,11 +49,6 @@ namespace SistemaLirios.Repository
         public async Task<bool> Delete(int id)
         {
             OrigemModel origemPorId = await BuscarPorId(id);
-
-            if (origemPorId == null)
-            {
-                throw new Exception($"Origem {id} não encontrado no banco de dados");
-            }
 
             _dbContext.Origem.Remove(origemPorId);
             await _dbContext.SaveChangesAsync();

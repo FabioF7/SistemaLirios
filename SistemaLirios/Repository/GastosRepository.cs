@@ -21,11 +21,11 @@ namespace SistemaLirios.Repository
 
         public async Task<GastosModel> BuscarPorId(int id)
         {
-            return await _dbContext.Gastos.FirstOrDefaultAsync(x => x.Id == id);
+            return await _dbContext.Gastos.FirstOrDefaultAsync(x => x.Id == id) ?? throw new Exception($"Gasto {id} não encontrado no banco de dados");
         }
-        public Task<List<GastosModel>> BuscarPorData(DateTime dataInicio, DateTime dataFim)
+        public async Task<List<GastosModel>> BuscarPorData(DateTime dataInicio, DateTime dataFim)
         {
-            throw new NotImplementedException();
+            return await _dbContext.Gastos.Where(x => x.DtCadastro >= dataInicio && x.DtCadastro <= dataFim).ToListAsync();
         }
         public async Task<GastosModel> Insert(GastosModel Gastos)
         {
@@ -36,7 +36,7 @@ namespace SistemaLirios.Repository
         }
         public async Task<GastosModel> Update(GastosModel Gastos, int id)
         {
-            GastosModel GastosPorId = await BuscarPorId(id) ?? throw new Exception($"Gasto {id} não encontrado no banco de dados");
+            GastosModel GastosPorId = await BuscarPorId(id);
 
             GastosPorId.NomeGasto = Gastos.NomeGasto;
             GastosPorId.Valor = Gastos.Valor;
@@ -52,7 +52,7 @@ namespace SistemaLirios.Repository
         }
         public async Task<bool> Delete(int id)
         {
-            GastosModel GastosPorId = await BuscarPorId(id) ?? throw new Exception($"Gasto {id} não encontrado no banco de dados");
+            GastosModel GastosPorId = await BuscarPorId(id);
 
             _dbContext.Gastos.Remove(GastosPorId);
             await _dbContext.SaveChangesAsync();

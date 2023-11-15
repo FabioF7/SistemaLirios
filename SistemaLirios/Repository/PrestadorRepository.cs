@@ -1,33 +1,63 @@
-﻿using SistemaLirios.Models;
+﻿using Microsoft.EntityFrameworkCore;
+using SistemaLirios.Data;
+using SistemaLirios.Models;
 using SistemaLirios.Repository.Interfaces;
 
 namespace SistemaLirios.Repository
 {
     public class PrestadorRepository : IPrestadorRepository
     {
-        public Task<PrestadorModel> BuscarPorId(int id)
+
+        private readonly SistemaLiriosDBContext _dbContext;
+
+        public PrestadorRepository(SistemaLiriosDBContext sistemaLirioDBContext)
         {
-            throw new NotImplementedException();
+            _dbContext = sistemaLirioDBContext;
+        }
+        public async Task<List<PrestadorModel>> BuscarTodosPrestadores()
+        {
+            return await _dbContext.Prestador.ToListAsync();
         }
 
-        public Task<List<PrestadorModel>> BuscarTodosPrestadores()
+        public async Task<PrestadorModel> BuscarPorId(int id)
         {
-            throw new NotImplementedException();
-        }     
-
-        public Task<PrestadorModel> Insert(PrestadorModel Prestador)
-        {
-            throw new NotImplementedException();
+            return await _dbContext.Prestador.FirstOrDefaultAsync(x => x.Id == id) ?? throw new Exception($"Prestador {id} não encontrado no banco de dados");
         }
 
-        public Task<PrestadorModel> Update(PrestadorModel Prestador, int id)
+        public async Task<PrestadorModel> Insert(PrestadorModel Prestador)
         {
-            throw new NotImplementedException();
+            await _dbContext.Prestador.AddAsync(Prestador);
+            await _dbContext.SaveChangesAsync();
+
+            return Prestador;
         }
 
-        public Task<bool> Delete(int id)
+        public async Task<PrestadorModel> Update(PrestadorModel Prestador, int id)
         {
-            throw new NotImplementedException();
+            PrestadorModel prestadorPorId = await BuscarPorId(id);
+
+            prestadorPorId.Nome = Prestador.Nome;
+            prestadorPorId.TipoServicoId = Prestador.TipoServicoId;
+            prestadorPorId.TipoServico = Prestador.TipoServico;
+            prestadorPorId.Local = Prestador.Local;
+            prestadorPorId.Ativo = Prestador.Ativo;
+            prestadorPorId.DtAlteracao = Prestador.DtAlteracao;
+            prestadorPorId.AlteradoPor = Prestador.AlteradoPor;
+
+            _dbContext.Prestador.Update(prestadorPorId);
+            await _dbContext.SaveChangesAsync();
+
+            return prestadorPorId;
+        }
+
+        public async Task<bool> Delete(int id)
+        {
+            PrestadorModel prestadorPorId = await BuscarPorId(id);
+
+            _dbContext.Prestador.Remove(prestadorPorId);
+            await _dbContext.SaveChangesAsync();
+
+            return true;
         }
     }
 }
