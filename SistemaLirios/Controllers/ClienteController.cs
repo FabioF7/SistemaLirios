@@ -18,7 +18,7 @@ namespace SistemaLirios.Controllers
         }
 
         [HttpGet]
-        [Authorize]
+        [Authorize (Roles = "Admin")]
         public async Task<ActionResult<List<ClienteModel>>> BuscarTodosClientes()  //OK
         {
             List<ClienteModel> clientes = await _clienteRepository.BuscarTodosClientes();
@@ -32,7 +32,7 @@ namespace SistemaLirios.Controllers
         }
 
         [HttpGet("{id}")]
-        [Authorize]
+        [Authorize (Roles = "Admin")]
         public async Task<ActionResult<ClienteModel>> BuscarPorId(int id)  //OK
         {
             ClienteModel cliente = await _clienteRepository.BuscarPorId(id);
@@ -46,7 +46,7 @@ namespace SistemaLirios.Controllers
         }
 
         [HttpPost]
-        [Authorize]
+        [Authorize (Roles = "Admin")]
         public async Task<ActionResult<ClienteModel>> Insert([FromBody] ClienteModel clienteModel)  //OK
         {
             ClienteModel cliente = await _clienteRepository.Insert(clienteModel);
@@ -60,7 +60,7 @@ namespace SistemaLirios.Controllers
         }
 
         [HttpPut("{id}")]
-        [Authorize]
+        [Authorize (Roles = "Admin")]
         public async Task<ActionResult<ClienteModel>> Update(int id, [FromBody] ClienteModel clienteModel)  //OK
         {
             clienteModel.Id = id;
@@ -75,7 +75,7 @@ namespace SistemaLirios.Controllers
         }
 
         [HttpDelete("{id}")]
-        [Authorize]
+        [Authorize (Roles = "Admin")]
         public async Task<ActionResult<ClienteModel>> Delete(int id)  //OK
         {
             bool sucesso = await _clienteRepository.Delete(id);

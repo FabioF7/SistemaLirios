@@ -17,7 +17,7 @@ namespace SistemaLirios.Controllers
         }
 
         [HttpGet]
-        [Authorize]
+        [Authorize (Roles = "Admin")]
         public async Task<ActionResult<List<PrestadorModel>>> BuscarTodosPrestadores()
         {
             List<PrestadorModel> prestador = await _prestadorRepository.BuscarTodosPrestadores();
@@ -32,7 +32,7 @@ namespace SistemaLirios.Controllers
 
 
         [HttpGet("{id}")]
-        [Authorize]
+        [Authorize (Roles = "Admin")]
         public async Task<ActionResult<PrestadorModel>> BuscarPorId(int id)
         {
             PrestadorModel prestador = await _prestadorRepository.BuscarPorId(id);
@@ -46,7 +46,7 @@ namespace SistemaLirios.Controllers
         }
 
         [HttpPost]
-        [Authorize]
+        [Authorize (Roles = "Admin")]
         public async Task<ActionResult<PrestadorModel>> Insert([FromBody] PrestadorModel prestadorModel)
         {
             PrestadorModel prestador = await _prestadorRepository.Insert(prestadorModel);
@@ -60,7 +60,7 @@ namespace SistemaLirios.Controllers
         }
 
         [HttpPut("{id}")]
-        [Authorize]
+        [Authorize (Roles = "Admin")]
         public async Task<ActionResult<PrestadorModel>> Update(int id, [FromBody] PrestadorModel prestadorModel)
         {
             prestadorModel.Id = id;
@@ -75,7 +75,7 @@ namespace SistemaLirios.Controllers
         }
 
         [HttpDelete("{id}")]
-        [Authorize]
+        [Authorize (Roles = "Admin")]
         public async Task<ActionResult<PrestadorModel>> Delete(int id)
         {
             bool sucesso = await _prestadorRepository.Delete(id);

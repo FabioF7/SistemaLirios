@@ -16,7 +16,7 @@ namespace SistemaLirios.Controllers
         }
 
         [HttpGet]
-        [Authorize]
+        [Authorize (Roles = "Admin")]
         public async Task<ActionResult<List<TipoServicoModel>>> BuscarTodosTipoServicos()
         {
             throw new NotImplementedException();
@@ -24,28 +24,28 @@ namespace SistemaLirios.Controllers
 
 
         [HttpGet("{id}")]
-        [Authorize]
+        [Authorize (Roles = "Admin")]
         public async Task<ActionResult<TipoServicoModel>> BuscarPorId(int id)
         {
             throw new NotImplementedException();
         }
 
         [HttpPost]
-        [Authorize]
+        [Authorize (Roles = "Admin")]
         public async Task<ActionResult<TipoServicoModel>> Insert([FromBody] TipoServicoModel tipoServico)
         {
             throw new NotImplementedException();
         }
 
         [HttpPut("{id}")]
-        [Authorize]
+        [Authorize (Roles = "Admin")]
         public async Task<ActionResult<TipoServicoModel>> Update(int id, [FromBody] TipoServicoModel tipoServico)
         {
             throw new NotImplementedException();
         }
 
         [HttpDelete("{id}")]
-        [Authorize]
+        [Authorize (Roles = "Admin")]
         public async Task<ActionResult<TipoServicoModel>> Delete(int id)
         {
             throw new NotImplementedException();

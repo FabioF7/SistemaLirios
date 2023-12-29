@@ -18,7 +18,7 @@ namespace SistemaLirios.Controllers
         }
 
         [HttpGet]
-        [Authorize]
+        [Authorize (Roles = "Admin")]
         public async Task<ActionResult<List<PerfilModel>>> BuscarTodosPerfis()
         {
             List<PerfilModel> perfil = await _perfilRepository.BuscarTodosPerfis();
@@ -32,7 +32,7 @@ namespace SistemaLirios.Controllers
         }
 
         [HttpGet("{id}")]
-        [Authorize]
+        [Authorize (Roles = "Admin")]
         public async Task<ActionResult<PerfilModel>> BuscarPorId(int id)
         {
             PerfilModel perfil = await _perfilRepository.BuscarPorId(id);
@@ -46,7 +46,7 @@ namespace SistemaLirios.Controllers
         }
 
         [HttpPost]
-        [Authorize]
+        [Authorize (Roles = "Admin")]
         public async Task<ActionResult<PerfilModel>> Insert([FromBody] PerfilModel perfilModel)
         {
             PerfilModel perfil = await _perfilRepository.Insert(perfilModel);
@@ -60,7 +60,7 @@ namespace SistemaLirios.Controllers
         }
 
         [HttpPut("{id}")]
-        [Authorize]
+        [Authorize (Roles = "Admin")]
         public async Task<ActionResult<PerfilModel>> Update(int id, [FromBody] PerfilModel perfilModel)
         {
             perfilModel.Id = id;
@@ -75,7 +75,7 @@ namespace SistemaLirios.Controllers
         }
 
         [HttpDelete("{id}")]
-        [Authorize]
+        [Authorize (Roles = "Admin")]
         public async Task<ActionResult<PerfilModel>> Delete(int id)
         {
             bool sucesso = await _perfilRepository.Delete(id);

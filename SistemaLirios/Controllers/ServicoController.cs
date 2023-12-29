@@ -17,7 +17,7 @@ namespace SistemaLirios.Controllers
         }
 
         [HttpGet]
-        [Authorize]
+        [Authorize (Roles = "Admin")]
         public async Task<ActionResult<List<ServicoModel>>> BuscarTodosServicos()
         {
             List<ServicoModel> servico = await _servicoRepository.BuscarTodosServicos();
@@ -32,7 +32,7 @@ namespace SistemaLirios.Controllers
 
 
         [HttpGet("{tipo}")]
-        [Authorize]
+        [Authorize (Roles = "Admin")]
         public async Task<ActionResult<ServicoModel>> BuscarPorTipo(int tipo)
         {
             List<ServicoModel> servico = await _servicoRepository.BuscarPorTipo(tipo);
@@ -46,7 +46,7 @@ namespace SistemaLirios.Controllers
         }
 
         [HttpPost]
-        [Authorize]
+        [Authorize (Roles = "Admin")]
         public async Task<ActionResult<ServicoModel>> Insert([FromBody] ServicoModel servicoModel)
         {
             ServicoModel servico = await _servicoRepository.Insert(servicoModel);
@@ -60,7 +60,7 @@ namespace SistemaLirios.Controllers
         }
 
         [HttpPut("{id}")]
-        [Authorize]
+        [Authorize (Roles = "Admin")]
         public async Task<ActionResult<ServicoModel>> Update(int id, [FromBody] ServicoModel servicoModel)
         {
             servicoModel.Id = id;
@@ -75,7 +75,7 @@ namespace SistemaLirios.Controllers
         }
 
         [HttpDelete("{id}")]
-        [Authorize]
+        [Authorize (Roles = "Admin")]
         public async Task<ActionResult<ServicoModel>> Delete(int id)
         {
             bool sucesso = await _servicoRepository.Delete(id);

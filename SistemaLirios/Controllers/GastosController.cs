@@ -18,7 +18,7 @@ namespace SistemaLirios.Controllers
         }
 
         [HttpGet]
-        [Authorize]
+        [Authorize (Roles = "Admin")]
         public async Task<ActionResult<List<GastosModel>>> BuscarTodosGastos()  //OK
         {
             List<GastosModel> gastos = await _gastosRepository.BuscarTodosGastos();
@@ -33,14 +33,14 @@ namespace SistemaLirios.Controllers
 
 
         [HttpGet("{dataInicio}/{dataFim}")]
-        [Authorize]
+        [Authorize (Roles = "Admin")]
         public async Task<ActionResult<GastosModel>> BuscarPorData(DateTime dataInicio, DateTime dataFim)
         {
             throw new NotImplementedException();
         }
 
         [HttpPost]
-        [Authorize]
+        [Authorize (Roles = "Admin")]
         public async Task<ActionResult<GastosModel>> Insert([FromBody] GastosModel gastosModel)  //OK
         {
             GastosModel gastos = await _gastosRepository.Insert(gastosModel);
@@ -54,7 +54,7 @@ namespace SistemaLirios.Controllers
         }
 
         [HttpPut("{id}")]
-        [Authorize]
+        [Authorize (Roles = "Admin")]
         public async Task<ActionResult<GastosModel>> Update(int id, [FromBody] GastosModel gastosModel)  //OK
         {
             gastosModel.Id = id;
@@ -68,7 +68,7 @@ namespace SistemaLirios.Controllers
         }
 
         [HttpDelete("{id}")]
-        [Authorize]
+        [Authorize (Roles = "Admin")]
         public async Task<ActionResult<GastosModel>> Delete(int id)  //OK
         {
             bool sucesso = await _gastosRepository.Delete(id);

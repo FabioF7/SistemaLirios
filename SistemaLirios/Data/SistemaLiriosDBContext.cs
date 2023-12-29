@@ -13,16 +13,16 @@ namespace SistemaLirios.Data
         { 
         }
 
-        public DbSet<ProdutoModel> Produto { get; set; }
         public DbSet<ClienteModel> Cliente { get; set; }
-        public DbSet<VendaModel> Venda { get; set; }
         public DbSet<GastosModel> Gastos { get; set; }
         public DbSet<OrigemModel> Origem { get; set; }
+        public DbSet<PerfilModel> Perfil { get; set; }
         public DbSet<PrestadorModel> Prestador { get; set; }
+        public DbSet<ProdutoModel> Produto { get; set; }
         public DbSet<ServicoModel> Servico { get; set; }
         public DbSet<TipoServicoModel> TipoServico { get; set; }
         public DbSet<UsuarioModel> Usuario { get; set; }
-        public DbSet<PerfilModel> Perfil { get; set; }
+        public DbSet<VendaModel> Venda { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

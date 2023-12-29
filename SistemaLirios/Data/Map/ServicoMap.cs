@@ -18,7 +18,7 @@ namespace SistemaLirios.Data.Map
             builder.Property(x => x.AlteradoPor).HasMaxLength(55);
             builder.Property(x => x.DtAlteracao);
 
-            builder.HasOne(x => x.TipoServico);
+            builder.HasOne(x => x.TipoServico).WithMany().HasForeignKey(x => x.TipoServicoId);
         }
     }
 }

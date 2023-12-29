@@ -17,7 +17,12 @@ namespace SistemaLirios.Repository
         public async Task<UsuarioModel> BuscarPorId(int id)
         {
             return await _dbContext.Usuario.FirstOrDefaultAsync(x => x.UserID == id) ?? throw new Exception($"Usuario {id} não encontrado no banco de dados");
-        }     
+        }
+
+        public async Task<UsuarioModel> BuscarPorUsuario(string usuario)
+        {
+            return await _dbContext.Usuario.Include(u => u.Perfil).FirstOrDefaultAsync(x => x.Usuario == usuario) ?? throw new Exception($"Usuario {usuario} não encontrado no banco de dados");
+        }
 
         public async Task<UsuarioModel> Insert(UsuarioModel Usuario)
         {
@@ -31,13 +36,13 @@ namespace SistemaLirios.Repository
         {
             UsuarioModel usuarioPorId = await BuscarPorId(id);
 
-            usuarioPorId.Nome = Usuario.Nome;
-            usuarioPorId.Usuario = Usuario.Usuario;
-            usuarioPorId.PasswordHash = Usuario.PasswordHash;
-            usuarioPorId.PasswordSalt = Usuario.PasswordSalt;
+            usuarioPorId.Nome = Usuario.Nome != null ? Usuario.Nome : usuarioPorId.Nome;
+            usuarioPorId.Usuario = Usuario.Usuario != null ? Usuario.Usuario : usuarioPorId.Usuario;
+            usuarioPorId.PasswordHash = Usuario.PasswordHash != null ? Usuario.PasswordHash : usuarioPorId.PasswordHash;
+            usuarioPorId.PasswordSalt = Usuario.PasswordSalt != null ? Usuario.PasswordSalt : usuarioPorId.PasswordSalt;
             usuarioPorId.DtAlteracao = Usuario.DtAlteracao;
-            usuarioPorId.Ativo = Usuario.Ativo;
-            usuarioPorId.IdPerfil = Usuario.IdPerfil;
+            usuarioPorId.Ativo = Usuario.Ativo != 3 ? Usuario.Ativo : usuarioPorId.Ativo;
+            usuarioPorId.IdPerfil = Usuario.IdPerfil != 0 ? Usuario.IdPerfil : usuarioPorId.IdPerfil;
 
             _dbContext.Usuario.Update(usuarioPorId);
             await _dbContext.SaveChangesAsync();

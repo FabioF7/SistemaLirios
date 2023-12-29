@@ -18,7 +18,7 @@ namespace SistemaLirios.Controllers
         }
 
         [HttpGet]
-        [Authorize]
+        [Authorize (Roles = "Admin")]
         public async Task<ActionResult<List<ProdutoModel>>> BuscarTodosProdutos()
         {
             List<ProdutoModel> produto = await _produtoRepository.BuscarTodosProdutos();
@@ -32,7 +32,7 @@ namespace SistemaLirios.Controllers
         }
 
         [HttpGet("{id}")]
-        [Authorize]
+        [Authorize (Roles = "Admin")]
         public async Task<ActionResult<ProdutoModel>> BuscarPorId(int id)
         {
             ProdutoModel produto = await _produtoRepository.BuscarPorId(id);
@@ -46,7 +46,7 @@ namespace SistemaLirios.Controllers
         }
 
         [HttpGet("{idCategoria}")]
-        [Authorize]
+        [Authorize (Roles = "Admin")]
         public async Task<ActionResult<List<ProdutoModel>>> BuscarPorCategoria(int idCategoria)
         {
             List<ProdutoModel> produto = await _produtoRepository.BuscarPorCategoria(idCategoria);
@@ -60,7 +60,7 @@ namespace SistemaLirios.Controllers
         }
 
         [HttpGet("{idOrigem}")]
-        [Authorize]
+        [Authorize (Roles = "Admin")]
         public async Task<ActionResult<List<ProdutoModel>>> BuscarPorOrigem(int idOrigem)
         {
             List<ProdutoModel> produto = await _produtoRepository.BuscarPorOrigem(idOrigem);
@@ -74,7 +74,7 @@ namespace SistemaLirios.Controllers
         }
 
         [HttpGet("{dataInicio}/{dataFim}")]
-        [Authorize]
+        [Authorize (Roles = "Admin")]
         public async Task<ActionResult<ProdutoModel>> BuscarPorData(DateTime dataInicio, DateTime dataFim)
         {
             List<ProdutoModel> produto = await _produtoRepository.BuscarPorData(dataInicio, dataFim);
@@ -88,7 +88,7 @@ namespace SistemaLirios.Controllers
         }
 
         [HttpPost]
-        [Authorize]
+        [Authorize (Roles = "Admin")]
         public async Task<ActionResult<ProdutoModel>> Insert([FromBody] ProdutoModel produtoModel)  //OK
         {
             ProdutoModel produto = await _produtoRepository.Insert(produtoModel);
@@ -102,7 +102,7 @@ namespace SistemaLirios.Controllers
         }
 
         [HttpPut("{id}")]
-        [Authorize]
+        [Authorize (Roles = "Admin")]
         public async Task<ActionResult<ProdutoModel>> Update(int id, [FromBody] ProdutoModel produtoModel)  //OK
         {
             produtoModel.Id = id;
@@ -117,7 +117,7 @@ namespace SistemaLirios.Controllers
         }
 
         [HttpDelete("{id}")]
-        [Authorize]
+        [Authorize (Roles = "Admin")]
         public async Task<ActionResult<ProdutoModel>> Delete(int id)  //OK
         {
             bool sucesso = await _produtoRepository.Delete(id);

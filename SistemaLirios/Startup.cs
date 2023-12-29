@@ -9,6 +9,7 @@ using SistemaLirios.Repository;
 using SistemaLirios.Repository.Interfaces;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 namespace SistemaLirios
 {
@@ -31,27 +32,34 @@ namespace SistemaLirios
                     options => options.UseSqlServer(Configuration.GetConnectionString("DataBase"))
                 );
 
-            services.AddScoped<IProdutoRepository, ProdutoRepository>();
-            services.AddScoped<IVendaRepository, VendaRepository>();
             services.AddScoped<IClienteRepository, ClienteRepository>();
             services.AddScoped<IGastosRepository, GastosRepository>();
             services.AddScoped<IOrigemRepository, OrigemRepository>();
+            services.AddScoped<IPerfilRepository, PerfilRepository>();
             services.AddScoped<IPrestadorRepository, PrestadorRepository>();
+            services.AddScoped<IProdutoRepository, ProdutoRepository>();
             services.AddScoped<IServicoRepository, ServicoRepository>();
             services.AddScoped<ITipoServicoRepository, TipoServicoRepository>();
+            services.AddScoped<IUsuarioRepository, UsuarioRepository>();
+            services.AddScoped<IVendaRepository, VendaRepository>();
 
             services.AddSwaggerGen();
 
-            services.AddAuthentication("Bearer")
-                .AddJwtBearer(options =>
+
+            services.AddAuthentication(x =>
+            {
+                x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            }).AddJwtBearer(options =>
                 {
-                    options.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
+                    options.RequireHttpsMetadata = false;
+                    options.SaveToken = true;
+                    options.TokenValidationParameters = new TokenValidationParameters
                     {
-                        ValidateIssuer = true,
-                        ValidateAudience = true,
-                        ValidateLifetime = true,
                         ValidateIssuerSigningKey = true,
-                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Environment.GetEnvironmentVariable("CHAVE_SECRETA_JWT")))
+                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Environment.GetEnvironmentVariable("CHAVE_SECRETA_JWT"))),
+                        ValidateIssuer = false,
+                        ValidateAudience = false
                     };
                 });
 

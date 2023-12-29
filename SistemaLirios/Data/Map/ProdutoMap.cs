@@ -23,7 +23,7 @@ namespace SistemaLirios.Data.Map
             builder.Property(x => x.AlteradoPor).HasMaxLength(55);
             builder.Property(x => x.DtAlteracao);
 
-            builder.HasOne(x => x.Origem);
+            builder.HasOne(x => x.Origem).WithMany().HasForeignKey(x => x.OrigemId);
         }
     }
 }

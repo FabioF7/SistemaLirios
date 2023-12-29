@@ -17,7 +17,7 @@ namespace SistemaLirios.Controllers
         }
 
         [HttpGet]
-        [Authorize]
+        [Authorize (Roles = "Admin")]
         public async Task<ActionResult<List<OrigemModel>>> BuscarTodasOrigens()
         {
             List<OrigemModel> origem = await _origemRepository.BuscarTodasOrigens();
@@ -31,7 +31,7 @@ namespace SistemaLirios.Controllers
         }
 
         [HttpPost]
-        [Authorize]
+        [Authorize (Roles = "Admin")]
         public async Task<ActionResult<OrigemModel>> Insert([FromBody] OrigemModel origemModel)
         {
             OrigemModel origem = await _origemRepository.Insert(origemModel);
@@ -45,7 +45,7 @@ namespace SistemaLirios.Controllers
         }
 
         [HttpPut("{id}")]
-        [Authorize]
+        [Authorize (Roles = "Admin")]
         public async Task<ActionResult<OrigemModel>> Update(int id, [FromBody] OrigemModel origemModel)
         {
             origemModel.Id = id;
@@ -60,7 +60,7 @@ namespace SistemaLirios.Controllers
         }
 
         [HttpDelete("{id}")]
-        [Authorize]
+        [Authorize (Roles = "Admin")]
         public async Task<ActionResult<OrigemModel>> Delete(int id)
         {
             bool sucesso = await _origemRepository.Delete(id);
