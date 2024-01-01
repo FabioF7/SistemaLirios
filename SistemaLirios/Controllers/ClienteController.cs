@@ -17,75 +17,153 @@ namespace SistemaLirios.Controllers
             _clienteRepository = clienteRepository;
         }
 
-        [HttpGet]
-        [Authorize (Roles = "Admin")]
+        [HttpGet("Todos")]
+        [Authorize(Roles = "Admin")]
         public async Task<ActionResult<List<ClienteModel>>> BuscarTodosClientes()  //OK
         {
-            List<ClienteModel> clientes = await _clienteRepository.BuscarTodosClientes();
+            try
+            {            
+                List<ClienteModel> clientes = await _clienteRepository.BuscarTodosClientes();
 
-            if(clientes == null)
-            {
-                return BadRequest("Nenhum Cliente encontrado!");
+                if (clientes == null)
+                {
+                    return BadRequest("Nenhum Cliente encontrado!");
+                }
+
+                return Ok(clientes);
             }
+            catch (Exception ex)
+            {
+                return BadRequest($"Ocorreu um Erro: {ex}");
+            }
+        }
 
-            return Ok(clientes);
+        [HttpGet("{Nome}")]
+        [Authorize(Roles = "Admin")]
+        public async Task<ActionResult<ClienteModel>> BuscarPorNome(string Nome)  //OK
+        {
+            try
+            {
+                ClienteModel cliente = await _clienteRepository.BuscarPorNome(Nome);
+
+                if (cliente == null)
+                {
+                    return BadRequest("Nenhum Cliente encontrado!");
+                }
+
+                return Ok(cliente);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest($"Ocorreu um Erro: {ex}");
+            }
+        }
+
+        [HttpGet]
+        [Authorize(Roles = "Admin")]
+        public async Task<ActionResult<List<ClienteModel>>> BuscarPorInadimplencia()  //OK
+        {
+            try
+            {
+                List<ClienteModel> clientes = await _clienteRepository.BuscarPorInadimplencia();
+
+                if (clientes == null)
+                {
+
+                    return BadRequest("Nenhum Cliente encontrado!");
+                }
+
+                return Ok(clientes);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest($"Ocorreu um Erro: {ex}");
+            }
         }
 
         [HttpGet("{id}")]
         [Authorize (Roles = "Admin")]
         public async Task<ActionResult<ClienteModel>> BuscarPorId(int id)  //OK
         {
-            ClienteModel cliente = await _clienteRepository.BuscarPorId(id);
-
-            if (cliente == null)
+            try
             {
-                return BadRequest("Cliente não encontrado!");
-            }
+                ClienteModel cliente = await _clienteRepository.BuscarPorId(id);
 
-            return Ok(cliente);
+                if (cliente == null)
+                {
+                    return BadRequest("Cliente não encontrado!");
+                }
+
+                return Ok(cliente);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest($"Ocorreu um Erro: {ex}");
+            }
         }
 
         [HttpPost]
         [Authorize (Roles = "Admin")]
         public async Task<ActionResult<ClienteModel>> Insert([FromBody] ClienteModel clienteModel)  //OK
         {
-            ClienteModel cliente = await _clienteRepository.Insert(clienteModel);
-
-            if (cliente == null)
+            try
             {
-                return BadRequest("Não foi possível incluir cliente!");
-            }
+                ClienteModel cliente = await _clienteRepository.Insert(clienteModel);
 
-            return Ok(cliente);
+                if (cliente == null)
+                {
+                    return BadRequest("Não foi possível incluir cliente!");
+                }
+
+                return Ok(cliente);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest($"Ocorreu um Erro: {ex}");
+            }
         }
 
         [HttpPut("{id}")]
         [Authorize (Roles = "Admin")]
         public async Task<ActionResult<ClienteModel>> Update(int id, [FromBody] ClienteModel clienteModel)  //OK
         {
-            clienteModel.Id = id;
-            ClienteModel cliente = await _clienteRepository.Update(clienteModel, id);
-
-            if (cliente == null)
+            try
             {
-                return BadRequest("Não foi possível alterar cliente!");
-            }
+                clienteModel.Id = id;
+                ClienteModel cliente = await _clienteRepository.Update(clienteModel, id);
 
-            return Ok(cliente);
+                if (cliente == null)
+                {
+                    return BadRequest("Não foi possível alterar cliente!");
+                }
+
+                return Ok(cliente);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest($"Ocorreu um Erro: {ex}");
+            }
         }
 
         [HttpDelete("{id}")]
         [Authorize (Roles = "Admin")]
         public async Task<ActionResult<ClienteModel>> Delete(int id)  //OK
         {
-            bool sucesso = await _clienteRepository.Delete(id);
-
-            if (!sucesso)
+            try
             {
-                return BadRequest("Não foi possível excluir cliente!");
-            }
+                bool sucesso = await _clienteRepository.Delete(id);
 
-            return Ok(sucesso);
+                if (!sucesso)
+                {
+                    return BadRequest("Não foi possível excluir cliente!");
+                }
+
+                return Ok(sucesso);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest($"Ocorreu um Erro: {ex}");
+            }
         }
     }
 }

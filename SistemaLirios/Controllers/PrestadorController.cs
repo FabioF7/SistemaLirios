@@ -20,14 +20,21 @@ namespace SistemaLirios.Controllers
         [Authorize (Roles = "Admin")]
         public async Task<ActionResult<List<PrestadorModel>>> BuscarTodosPrestadores()
         {
-            List<PrestadorModel> prestador = await _prestadorRepository.BuscarTodosPrestadores();
-
-            if (prestador == null)
+            try
             {
-                return BadRequest("Nenhum prestador encontrado!");
-            }
+                List<PrestadorModel> prestador = await _prestadorRepository.BuscarTodosPrestadores();
 
-            return Ok(prestador);
+                if (prestador == null)
+                {
+                    return BadRequest("Nenhum prestador encontrado!");
+                }
+
+                return Ok(prestador);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest($"Ocorreu um Erro: {ex}");
+            }
         }
 
 
@@ -35,57 +42,85 @@ namespace SistemaLirios.Controllers
         [Authorize (Roles = "Admin")]
         public async Task<ActionResult<PrestadorModel>> BuscarPorId(int id)
         {
-            PrestadorModel prestador = await _prestadorRepository.BuscarPorId(id);
-
-            if (prestador == null)
+            try
             {
-                return BadRequest("Prestador não encontrado!");
-            }
+                PrestadorModel prestador = await _prestadorRepository.BuscarPorId(id);
 
-            return Ok(prestador);
+                if (prestador == null)
+                {
+                    return BadRequest("Prestador não encontrado!");
+                }
+
+                return Ok(prestador);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest($"Ocorreu um Erro: {ex}");
+            }
         }
 
         [HttpPost]
         [Authorize (Roles = "Admin")]
         public async Task<ActionResult<PrestadorModel>> Insert([FromBody] PrestadorModel prestadorModel)
         {
-            PrestadorModel prestador = await _prestadorRepository.Insert(prestadorModel);
-
-            if (prestador == null)
+            try
             {
-                return BadRequest("Não foi possível incluir prestador!");
-            }
+                PrestadorModel prestador = await _prestadorRepository.Insert(prestadorModel);
 
-            return Ok(prestador);
+                if (prestador == null)
+                {
+                    return BadRequest("Não foi possível incluir prestador!");
+                }
+
+                return Ok(prestador);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest($"Ocorreu um Erro: {ex}");
+            }
         }
 
         [HttpPut("{id}")]
         [Authorize (Roles = "Admin")]
         public async Task<ActionResult<PrestadorModel>> Update(int id, [FromBody] PrestadorModel prestadorModel)
         {
-            prestadorModel.Id = id;
-            PrestadorModel prestador = await _prestadorRepository.Update(prestadorModel, id);
-
-            if (prestador == null)
+            try
             {
-                return BadRequest("Não foi possível alterar prestador!");
-            }
+                prestadorModel.Id = id;
+                PrestadorModel prestador = await _prestadorRepository.Update(prestadorModel, id);
 
-            return Ok(prestador);
+                if (prestador == null)
+                {
+                    return BadRequest("Não foi possível alterar prestador!");
+                }
+
+                return Ok(prestador);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest($"Ocorreu um Erro: {ex}");
+            }
         }
 
         [HttpDelete("{id}")]
         [Authorize (Roles = "Admin")]
         public async Task<ActionResult<PrestadorModel>> Delete(int id)
         {
-            bool sucesso = await _prestadorRepository.Delete(id);
-
-            if (!sucesso)
+            try
             {
-                return BadRequest("Não foi possível excluir prestador!");
-            }
+                bool sucesso = await _prestadorRepository.Delete(id);
 
-            return Ok(sucesso);
+                if (!sucesso)
+                {
+                    return BadRequest("Não foi possível excluir prestador!");
+                }
+
+                return Ok(sucesso);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest($"Ocorreu um Erro: {ex}");
+            }
         }
     }
 }

@@ -12,11 +12,13 @@ namespace SistemaLirios.Data.Map
             builder.Property(x => x.NomeGasto).IsRequired().HasMaxLength(255);
             builder.Property(x => x.Valor).IsRequired();
             builder.Property(x => x.Recorrente).IsRequired();
+            builder.Property(x => x.TipoServicoId).IsRequired();
             builder.Property(x => x.CadastradoPor).IsRequired().HasMaxLength(55);
             builder.Property(x => x.DtCadastro).IsRequired();
             builder.Property(x => x.AlteradoPor).HasMaxLength(55);
             builder.Property(x => x.DtAlteracao);
 
+            builder.HasOne(x => x.TipoServico).WithMany().HasForeignKey(x => x.TipoServicoId);
         }
     }
 }
