@@ -17,6 +17,7 @@ namespace SistemaLirios.Models
         public int Bloqueado { get; set; }
         public int Inadimplencia { get; set; }
         public float? LimiteInadimplencia { get; set; }
+        public string? Observacoes { get; set; }
         public string? CadastradoPor { get; set; }
         public DateTime? DtCadastro { get; set; }
         public string? AlteradoPor { get; set; }

@@ -17,7 +17,7 @@ namespace SistemaLirios.Controllers
             _clienteRepository = clienteRepository;
         }
 
-        [HttpGet("Todos")]
+        [HttpGet()]
         [Authorize(Roles = "Admin")]
         public async Task<ActionResult<List<ClienteModel>>> BuscarTodosClientes()  //OK
         {
@@ -27,49 +27,6 @@ namespace SistemaLirios.Controllers
 
                 if (clientes == null)
                 {
-                    return BadRequest("Nenhum Cliente encontrado!");
-                }
-
-                return Ok(clientes);
-            }
-            catch (Exception ex)
-            {
-                return BadRequest($"Ocorreu um Erro: {ex}");
-            }
-        }
-
-        [HttpGet("{Nome}")]
-        [Authorize(Roles = "Admin")]
-        public async Task<ActionResult<ClienteModel>> BuscarPorNome(string Nome)  //OK
-        {
-            try
-            {
-                ClienteModel cliente = await _clienteRepository.BuscarPorNome(Nome);
-
-                if (cliente == null)
-                {
-                    return BadRequest("Nenhum Cliente encontrado!");
-                }
-
-                return Ok(cliente);
-            }
-            catch (Exception ex)
-            {
-                return BadRequest($"Ocorreu um Erro: {ex}");
-            }
-        }
-
-        [HttpGet]
-        [Authorize(Roles = "Admin")]
-        public async Task<ActionResult<List<ClienteModel>>> BuscarPorInadimplencia()  //OK
-        {
-            try
-            {
-                List<ClienteModel> clientes = await _clienteRepository.BuscarPorInadimplencia();
-
-                if (clientes == null)
-                {
-
                     return BadRequest("Nenhum Cliente encontrado!");
                 }
 

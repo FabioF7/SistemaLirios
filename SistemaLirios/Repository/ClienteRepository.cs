@@ -46,6 +46,9 @@ namespace SistemaLirios.Repository
             clientePorId.Sexo = Cliente.Sexo;
             clientePorId.Indicacao = Cliente.Indicacao;
             clientePorId.Bloqueado = Cliente.Bloqueado;
+            clientePorId.Inadimplencia = Cliente.Inadimplencia;
+            clientePorId.LimiteInadimplencia = Cliente.LimiteInadimplencia;
+            clientePorId.Observacoes = Cliente.Observacoes;
             clientePorId.AlteradoPor = Cliente.AlteradoPor;
             clientePorId.DtAlteracao = Cliente.DtAlteracao;
 
@@ -64,16 +67,6 @@ namespace SistemaLirios.Repository
             await _dbContext.SaveChangesAsync();
 
             return true;
-        }
-
-        public async Task<ClienteModel> BuscarPorNome(string NomeCliente)
-        {
-            return await _dbContext.Cliente.FirstOrDefaultAsync(x => x.Nome == NomeCliente) ?? throw new Exception($"Cliente {NomeCliente} não encontrado no banco de dados");
-        }
-
-        public async Task<List<ClienteModel>> BuscarPorInadimplencia()
-        {
-            return await _dbContext.Cliente.Where(x => x.Inadimplencia == 1).ToListAsync() ?? throw new Exception($"Não foram encontrados Clientes Inadimplentes");
         }
     }
 }

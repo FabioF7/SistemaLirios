@@ -1,38 +1,76 @@
-﻿using SistemaLirios.Models;
+﻿using Microsoft.EntityFrameworkCore;
+using SistemaLirios.Data;
+using SistemaLirios.Enums;
+using SistemaLirios.Models;
 using SistemaLirios.Repository.Interfaces;
 
 namespace SistemaLirios.Repository
 {
     public class VendaRepository : IVendaRepository
     {
-        public Task<List<VendaModel>> BuscarPorCliente(int idCliente)
+
+        private readonly SistemaLiriosDBContext _dbContext;
+
+        public VendaRepository(SistemaLiriosDBContext sistemaLirioDBContext)
         {
-            throw new NotImplementedException();
+            _dbContext = sistemaLirioDBContext;
         }
 
-        public Task<List<VendaModel>> BuscarPorId(int id)
+        public async Task<List<VendaModel>> BuscarTodosVendas()
         {
-            throw new NotImplementedException();
+            return await _dbContext.Venda.ToListAsync();
         }
 
-        public Task<List<VendaModel>> BuscarTodosVendas()
+        public async Task<VendaModel> BuscarPorId(int id)
         {
-            throw new NotImplementedException();
+            return await _dbContext.Venda.FirstOrDefaultAsync(x => x.Id == id) ?? throw new Exception($"Venda {id} não encontrado no banco de dados");
         }
 
-        public Task<bool> Delete(int id)
+        public async Task<List<VendaModel>> BuscarPorIdCliente(int id)
         {
-            throw new NotImplementedException();
+            return await _dbContext.Venda.Where(x => x.ClienteId == id).ToListAsync() ?? throw new Exception($"Vendas para o Cliente {id} não encontradas no banco de dados");
         }
 
-        public Task<VendaModel> Insert(VendaModel Venda)
+
+        public async Task<VendaModel> Insert(VendaModel Venda)
         {
-            throw new NotImplementedException();
+            await _dbContext.Venda.AddAsync(Venda);
+            await _dbContext.SaveChangesAsync();
+
+            return Venda;
         }
 
-        public Task<VendaModel> Update(VendaModel Venda, int id)
+        public async Task<VendaModel> Update(VendaModel venda, int id)
         {
-            throw new NotImplementedException();
+            VendaModel VendaPorId = await BuscarPorId(id);
+
+            VendaPorId.ValorVenda = venda.ValorVenda;
+            VendaPorId.DtVenda = venda.DtVenda;
+            VendaPorId.ClienteId = venda.ClienteId;
+            VendaPorId.ProdutoId = venda.ProdutoId;
+            VendaPorId.CustoProduto = venda.CustoProduto;
+            VendaPorId.MetodoPagamento = venda.MetodoPagamento;
+            VendaPorId.Tipo = venda.Tipo;
+            VendaPorId.TipoTransacao = venda.TipoTransacao;
+            VendaPorId.PreVenda = venda.PreVenda;
+            VendaPorId.AlteradoPor = venda.AlteradoPor;
+            VendaPorId.DtAlteracao = venda.DtAlteracao;
+
+            _dbContext.Venda.Update(VendaPorId);
+            await _dbContext.SaveChangesAsync();
+
+            return VendaPorId;
         }
+
+        public async Task<bool> Delete(int id)
+        {
+            VendaModel VendaPorId = await BuscarPorId(id);
+
+            _dbContext.Venda.Remove(VendaPorId);
+            await _dbContext.SaveChangesAsync();
+
+            return true;
+        }
+
     }
 }

@@ -20,6 +20,7 @@ namespace SistemaLirios.Data.Map
             builder.Property(x => x.Bloqueado).IsRequired();
             builder.Property(x => x.Inadimplencia).IsRequired();
             builder.Property(x => x.LimiteInadimplencia);
+            builder.Property(x => x.Observacoes);
             builder.Property(x => x.CadastradoPor).IsRequired().HasMaxLength(55);
             builder.Property(x => x.DtCadastro).IsRequired();
             builder.Property(x => x.AlteradoPor).HasMaxLength(55);
