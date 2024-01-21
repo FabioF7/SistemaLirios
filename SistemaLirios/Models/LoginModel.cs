@@ -1,6 +1,3 @@
-﻿using Microsoft.AspNetCore.Identity;
-using SistemaLirios.Enums;
-
 namespace SistemaLirios.Models
 {
     public class LoginModel

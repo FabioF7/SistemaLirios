@@ -1,4 +1,4 @@
-﻿using SistemaLirios.Models;
+using SistemaLirios.Models;
 
 namespace SistemaLirios.Repository.Interfaces
 {

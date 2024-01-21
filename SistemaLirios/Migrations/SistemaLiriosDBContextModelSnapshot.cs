@@ -193,6 +193,38 @@ namespace SistemaLirios.Migrations
                     b.ToTable("Perfil", (string)null);
                 });
 
+            modelBuilder.Entity("SistemaLirios.Models.PerfilModel", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("Ativo")
+                        .HasColumnType("int");
+
+                    b.Property<string>("DescricaoPerfil")
+                        .IsRequired()
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)");
+
+                    b.Property<DateTime>("DtAlteracao")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("DtCadastro")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("NomePerfil")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Perfil");
+                });
+
             modelBuilder.Entity("SistemaLirios.Models.PrestadorModel", b =>
                 {
                     b.Property<int>("Id")
@@ -426,6 +458,52 @@ namespace SistemaLirios.Migrations
                     b.HasIndex("PerfilId");
 
                     b.ToTable("Usuario", (string)null);
+                });
+
+            modelBuilder.Entity("SistemaLirios.Models.UsuarioModel", b =>
+                {
+                    b.Property<int>("UserID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("UserID"));
+
+                    b.Property<int>("Ativo")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("DtAlteracao")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("DtCadastro")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("IdPerfil")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Nome")
+                        .IsRequired()
+                        .HasMaxLength(150)
+                        .HasColumnType("nvarchar(150)");
+
+                    b.Property<byte>("PasswordHash")
+                        .HasColumnType("tinyint");
+
+                    b.Property<byte>("PasswordSalt")
+                        .HasColumnType("tinyint");
+
+                    b.Property<int?>("PerfilId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Usuario")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.HasKey("UserID");
+
+                    b.HasIndex("PerfilId");
+
+                    b.ToTable("Usuario");
                 });
 
             modelBuilder.Entity("SistemaLirios.Models.VendaModel", b =>
