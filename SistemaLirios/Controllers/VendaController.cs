@@ -80,18 +80,18 @@ namespace SistemaLirios.Controllers
 
         [HttpPost]
         [Authorize(Roles = "Admin")]
-        public async Task<ActionResult<VendaModel>> Insert([FromBody] VendaModel vendaModel)  //OK
+        public async Task<ActionResult<IEnumerable<VendaModel>>> Insert([FromBody] List<VendaModel> vendas)
         {
             try
             {
-                VendaModel venda = await _vendaRepository.Insert(vendaModel);
+                IEnumerable<VendaModel> vendasInseridas = await _vendaRepository.Insert(vendas);
 
-                if (venda == null)
+                if (vendasInseridas == null || !vendasInseridas.Any())
                 {
-                    return BadRequest("Não foi possível incluir venda!");
+                    return BadRequest("Não foi possível incluir vendas!");
                 }
 
-                return Ok(venda);
+                return Ok(vendasInseridas);
             }
             catch (Exception ex)
             {

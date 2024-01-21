@@ -32,13 +32,14 @@ namespace SistemaLirios.Repository
         }
 
 
-        public async Task<VendaModel> Insert(VendaModel Venda)
+        public async Task<List<VendaModel>> Insert(List<VendaModel> vendas)
         {
-            await _dbContext.Venda.AddAsync(Venda);
+            await _dbContext.Venda.AddRangeAsync(vendas);
             await _dbContext.SaveChangesAsync();
 
-            return Venda;
+            return vendas;
         }
+
 
         public async Task<VendaModel> Update(VendaModel venda, int id)
         {

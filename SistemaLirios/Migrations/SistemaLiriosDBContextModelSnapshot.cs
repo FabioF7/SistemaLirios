@@ -69,29 +69,20 @@ namespace SistemaLirios.Migrations
                         .HasMaxLength(1000)
                         .HasColumnType("nvarchar(1000)");
 
-                    b.Property<int>("Inadimplencia")
-                        .HasColumnType("int");
-
                     b.Property<int?>("Indicacao")
                         .HasColumnType("int");
-
-                    b.Property<float?>("LimiteInadimplencia")
-                        .HasColumnType("real");
 
                     b.Property<string>("Nome")
                         .IsRequired()
                         .HasMaxLength(255)
                         .HasColumnType("nvarchar(255)");
 
-                    b.Property<string>("Observacoes")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<int>("Sexo")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Cliente");
+                    b.ToTable("Cliente", (string)null);
                 });
 
             modelBuilder.Entity("SistemaLirios.Models.GastosModel", b =>
@@ -126,17 +117,12 @@ namespace SistemaLirios.Migrations
                     b.Property<int>("Recorrente")
                         .HasColumnType("int");
 
-                    b.Property<int>("TipoServicoId")
-                        .HasColumnType("int");
-
                     b.Property<float>("Valor")
                         .HasColumnType("real");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("TipoServicoId");
-
-                    b.ToTable("Gastos");
+                    b.ToTable("Gastos", (string)null);
                 });
 
             modelBuilder.Entity("SistemaLirios.Models.OrigemModel", b =>
@@ -172,7 +158,7 @@ namespace SistemaLirios.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Origem");
+                    b.ToTable("Origem", (string)null);
                 });
 
             modelBuilder.Entity("SistemaLirios.Models.PerfilModel", b =>
@@ -204,7 +190,7 @@ namespace SistemaLirios.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Perfil");
+                    b.ToTable("Perfil", (string)null);
                 });
 
             modelBuilder.Entity("SistemaLirios.Models.PrestadorModel", b =>
@@ -250,7 +236,7 @@ namespace SistemaLirios.Migrations
 
                     b.HasIndex("TipoServicoId");
 
-                    b.ToTable("Prestador");
+                    b.ToTable("Prestador", (string)null);
                 });
 
             modelBuilder.Entity("SistemaLirios.Models.ProdutoModel", b =>
@@ -311,7 +297,7 @@ namespace SistemaLirios.Migrations
 
                     b.HasIndex("OrigemId");
 
-                    b.ToTable("Produto");
+                    b.ToTable("Produto", (string)null);
                 });
 
             modelBuilder.Entity("SistemaLirios.Models.ServicoModel", b =>
@@ -355,7 +341,7 @@ namespace SistemaLirios.Migrations
 
                     b.HasIndex("TipoServicoId");
 
-                    b.ToTable("Servico");
+                    b.ToTable("Servico", (string)null);
                 });
 
             modelBuilder.Entity("SistemaLirios.Models.TipoServicoModel", b =>
@@ -391,7 +377,7 @@ namespace SistemaLirios.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("TipoServico");
+                    b.ToTable("TipoServico", (string)null);
                 });
 
             modelBuilder.Entity("SistemaLirios.Models.UsuarioModel", b =>
@@ -427,6 +413,9 @@ namespace SistemaLirios.Migrations
                         .IsRequired()
                         .HasColumnType("varbinary(max)");
 
+                    b.Property<int?>("PerfilId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Usuario")
                         .IsRequired()
                         .HasMaxLength(100)
@@ -434,9 +423,9 @@ namespace SistemaLirios.Migrations
 
                     b.HasKey("UserID");
 
-                    b.HasIndex("IdPerfil");
+                    b.HasIndex("PerfilId");
 
-                    b.ToTable("Usuario");
+                    b.ToTable("Usuario", (string)null);
                 });
 
             modelBuilder.Entity("SistemaLirios.Models.VendaModel", b =>
@@ -492,18 +481,7 @@ namespace SistemaLirios.Migrations
 
                     b.HasIndex("ProdutoId");
 
-                    b.ToTable("Venda");
-                });
-
-            modelBuilder.Entity("SistemaLirios.Models.GastosModel", b =>
-                {
-                    b.HasOne("SistemaLirios.Models.TipoServicoModel", "TipoServico")
-                        .WithMany()
-                        .HasForeignKey("TipoServicoId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("TipoServico");
+                    b.ToTable("Venda", (string)null);
                 });
 
             modelBuilder.Entity("SistemaLirios.Models.PrestadorModel", b =>
@@ -543,9 +521,7 @@ namespace SistemaLirios.Migrations
                 {
                     b.HasOne("SistemaLirios.Models.PerfilModel", "Perfil")
                         .WithMany()
-                        .HasForeignKey("IdPerfil")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("PerfilId");
 
                     b.Navigation("Perfil");
                 });
