@@ -60,5 +60,15 @@ namespace SistemaLirios.Repository
 
             return true;
         }
+
+        public async Task<List<GastosModel>> BuscarPorTipoServicoId(int TipoServicoId)
+        {
+            return await _dbContext.Gastos.Where(x => x.TipoServicoId == TipoServicoId).ToListAsync() ?? throw new Exception($"Não foram encontrados Gastos do tipo serviço {TipoServicoId}");
+        }
+
+        public async Task<List<GastosModel>> BuscarRecorrente()
+        {
+            return await _dbContext.Gastos.Where(x => x.Recorrente == 1).ToListAsync() ?? throw new Exception($"Não foram encontrados Gastos Recorrentes");
+        }
     }
 }

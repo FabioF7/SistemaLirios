@@ -17,75 +17,110 @@ namespace SistemaLirios.Controllers
         }
 
         [HttpGet]
-        [Authorize]
+        [Authorize (Roles = "Admin")]
         public async Task<ActionResult<List<ServicoModel>>> BuscarTodosServicos()
         {
-            List<ServicoModel> servico = await _servicoRepository.BuscarTodosServicos();
-
-            if (servico == null)
+            try
             {
-                return BadRequest("Nenhum Servico encontrado!");
-            }
+                List<ServicoModel> servico = await _servicoRepository.BuscarTodosServicos();
 
-            return Ok(servico);
+                if (servico == null)
+                {
+                    return BadRequest("Nenhum Servico encontrado!");
+                }
+
+                return Ok(servico);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest($"Ocorreu um Erro: {ex}");
+            }
         }
 
 
-        [HttpGet("{tipo}")]
-        [Authorize]
+        [HttpGet("Tipo/{tipo}")]
+        [Authorize (Roles = "Admin")]
         public async Task<ActionResult<ServicoModel>> BuscarPorTipo(int tipo)
         {
-            List<ServicoModel> servico = await _servicoRepository.BuscarPorTipo(tipo);
-
-            if (servico == null)
+            try
             {
-                return BadRequest("Nenhum Servico encontrado!");
-            }
+                List<ServicoModel> servico = await _servicoRepository.BuscarPorTipo(tipo);
 
-            return Ok(servico);
+                if (servico == null)
+                {
+                    return BadRequest("Nenhum Servico encontrado!");
+                }
+
+                return Ok(servico);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest($"Ocorreu um Erro: {ex}");
+            }
         }
 
         [HttpPost]
-        [Authorize]
+        [Authorize (Roles = "Admin")]
         public async Task<ActionResult<ServicoModel>> Insert([FromBody] ServicoModel servicoModel)
         {
-            ServicoModel servico = await _servicoRepository.Insert(servicoModel);
-
-            if (servico == null)
+            try
             {
-                return BadRequest("Não foi possível incluir servico!");
-            }
+                ServicoModel servico = await _servicoRepository.Insert(servicoModel);
 
-            return Ok(servico);
+                if (servico == null)
+                {
+                    return BadRequest("Não foi possível incluir servico!");
+                }
+
+                return Ok(servico);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest($"Ocorreu um Erro: {ex}");
+            }
         }
 
         [HttpPut("{id}")]
-        [Authorize]
+        [Authorize (Roles = "Admin")]
         public async Task<ActionResult<ServicoModel>> Update(int id, [FromBody] ServicoModel servicoModel)
         {
-            servicoModel.Id = id;
-            ServicoModel servico = await _servicoRepository.Update(servicoModel, id);
-
-            if (servico == null)
+            try
             {
-                return BadRequest("Não foi possível alterar servico!");
-            }
+                servicoModel.Id = id;
+                ServicoModel servico = await _servicoRepository.Update(servicoModel, id);
 
-            return Ok(servico);
+                if (servico == null)
+                {
+                    return BadRequest("Não foi possível alterar servico!");
+                }
+
+                return Ok(servico);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest($"Ocorreu um Erro: {ex}");
+            }
         }
 
         [HttpDelete("{id}")]
-        [Authorize]
+        [Authorize (Roles = "Admin")]
         public async Task<ActionResult<ServicoModel>> Delete(int id)
         {
-            bool sucesso = await _servicoRepository.Delete(id);
-
-            if (!sucesso)
+            try
             {
-                return BadRequest("Não foi possível excluir servico!");
-            }
+                bool sucesso = await _servicoRepository.Delete(id);
 
-            return Ok(sucesso);
+                if (!sucesso)
+                {
+                    return BadRequest("Não foi possível excluir servico!");
+                }
+
+                return Ok(sucesso);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest($"Ocorreu um Erro: {ex}");
+            }
         }
     }
 }

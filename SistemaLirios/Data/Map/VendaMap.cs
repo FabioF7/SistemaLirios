@@ -8,7 +8,7 @@ namespace SistemaLirios.Data.Map
     {
         public void Configure(EntityTypeBuilder<VendaModel> builder)
         {
-            builder.HasKey(x => x.Id);
+            builder.Property(x => x.Id);
             builder.Property(x => x.ValorVenda).IsRequired();
             builder.Property(x => x.DtVenda).IsRequired();
             builder.Property(x => x.ClienteId).IsRequired();
@@ -22,8 +22,8 @@ namespace SistemaLirios.Data.Map
             builder.Property(x => x.AlteradoPor).HasMaxLength(55);
             builder.Property(x => x.DtAlteracao);
 
-            builder.HasOne(x => x.Cliente);
-            builder.HasOne(x => x.Produto);
+            builder.HasOne(x => x.Cliente).WithMany().HasForeignKey(x => x.ClienteId);
+            builder.HasOne(x => x.Produto).WithMany().HasForeignKey(x => x.ProdutoId);
         }
     }
 }

@@ -15,10 +15,10 @@ namespace SistemaLirios.Models
         public MetodoPagamento MetodoPagamento { get; set; }
         public Tipo Tipo { get; set; }
         public TipoTransacao TipoTransacao { get; set; }
+        public int? PreVenda { get; set; }
         public string? CadastradoPor { get; set; }
-        public int PreVenda { get; set; }
         public string? AlteradoPor { get; set; }
-        public DateTime DtAlteracao { get; set; }
+        public DateTime? DtAlteracao { get; set; }
   
     }
 }

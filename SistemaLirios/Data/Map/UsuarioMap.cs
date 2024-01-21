@@ -1,4 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.EntityFrameworkCore;
 using SistemaLirios.Models;
 
@@ -18,7 +18,7 @@ namespace SistemaLirios.Data.Map
             builder.Property(x => x.DtCadastro).IsRequired();
             builder.Property(x => x.DtAlteracao);
 
-            builder.HasOne(x => x.Perfil);
+            builder.HasOne(x => x.Perfil).WithMany().HasForeignKey(x => x.IdPerfil);
 
         }
     }

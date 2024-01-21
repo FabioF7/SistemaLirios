@@ -2,6 +2,7 @@
 using SistemaLirios.Data;
 using SistemaLirios.Models;
 using SistemaLirios.Repository.Interfaces;
+using System.Linq;
 
 namespace SistemaLirios.Repository
 {
@@ -45,6 +46,9 @@ namespace SistemaLirios.Repository
             clientePorId.Sexo = Cliente.Sexo;
             clientePorId.Indicacao = Cliente.Indicacao;
             clientePorId.Bloqueado = Cliente.Bloqueado;
+            clientePorId.Inadimplencia = Cliente.Inadimplencia;
+            clientePorId.LimiteInadimplencia = Cliente.LimiteInadimplencia;
+            clientePorId.Observacoes = Cliente.Observacoes;
             clientePorId.AlteradoPor = Cliente.AlteradoPor;
             clientePorId.DtAlteracao = Cliente.DtAlteracao;
 

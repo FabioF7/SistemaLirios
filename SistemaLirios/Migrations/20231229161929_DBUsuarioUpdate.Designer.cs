@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SistemaLirios.Data;
 
@@ -11,9 +12,11 @@ using SistemaLirios.Data;
 namespace SistemaLirios.Migrations
 {
     [DbContext(typeof(SistemaLiriosDBContext))]
-    partial class SistemaLiriosDBContextModelSnapshot : ModelSnapshot
+    [Migration("20231229161929_DBUsuarioUpdate")]
+    partial class DBUsuarioUpdate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -82,7 +85,7 @@ namespace SistemaLirios.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Cliente", (string)null);
+                    b.ToTable("Cliente");
                 });
 
             modelBuilder.Entity("SistemaLirios.Models.GastosModel", b =>
@@ -122,7 +125,7 @@ namespace SistemaLirios.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Gastos", (string)null);
+                    b.ToTable("Gastos");
                 });
 
             modelBuilder.Entity("SistemaLirios.Models.OrigemModel", b =>
@@ -158,39 +161,7 @@ namespace SistemaLirios.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Origem", (string)null);
-                });
-
-            modelBuilder.Entity("SistemaLirios.Models.PerfilModel", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("Ativo")
-                        .HasColumnType("int");
-
-                    b.Property<string>("DescricaoPerfil")
-                        .IsRequired()
-                        .HasMaxLength(250)
-                        .HasColumnType("nvarchar(250)");
-
-                    b.Property<DateTime>("DtAlteracao")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime>("DtCadastro")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("NomePerfil")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Perfil", (string)null);
+                    b.ToTable("Origem");
                 });
 
             modelBuilder.Entity("SistemaLirios.Models.PerfilModel", b =>
@@ -268,7 +239,7 @@ namespace SistemaLirios.Migrations
 
                     b.HasIndex("TipoServicoId");
 
-                    b.ToTable("Prestador", (string)null);
+                    b.ToTable("Prestador");
                 });
 
             modelBuilder.Entity("SistemaLirios.Models.ProdutoModel", b =>
@@ -329,7 +300,7 @@ namespace SistemaLirios.Migrations
 
                     b.HasIndex("OrigemId");
 
-                    b.ToTable("Produto", (string)null);
+                    b.ToTable("Produto");
                 });
 
             modelBuilder.Entity("SistemaLirios.Models.ServicoModel", b =>
@@ -373,7 +344,7 @@ namespace SistemaLirios.Migrations
 
                     b.HasIndex("TipoServicoId");
 
-                    b.ToTable("Servico", (string)null);
+                    b.ToTable("Servico");
                 });
 
             modelBuilder.Entity("SistemaLirios.Models.TipoServicoModel", b =>
@@ -409,7 +380,7 @@ namespace SistemaLirios.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("TipoServico", (string)null);
+                    b.ToTable("TipoServico");
                 });
 
             modelBuilder.Entity("SistemaLirios.Models.UsuarioModel", b =>
@@ -444,52 +415,6 @@ namespace SistemaLirios.Migrations
                     b.Property<byte[]>("PasswordSalt")
                         .IsRequired()
                         .HasColumnType("varbinary(max)");
-
-                    b.Property<int?>("PerfilId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Usuario")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.HasKey("UserID");
-
-                    b.HasIndex("PerfilId");
-
-                    b.ToTable("Usuario", (string)null);
-                });
-
-            modelBuilder.Entity("SistemaLirios.Models.UsuarioModel", b =>
-                {
-                    b.Property<int>("UserID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("UserID"));
-
-                    b.Property<int>("Ativo")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("DtAlteracao")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime>("DtCadastro")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("IdPerfil")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Nome")
-                        .IsRequired()
-                        .HasMaxLength(150)
-                        .HasColumnType("nvarchar(150)");
-
-                    b.Property<byte>("PasswordHash")
-                        .HasColumnType("tinyint");
-
-                    b.Property<byte>("PasswordSalt")
-                        .HasColumnType("tinyint");
 
                     b.Property<int?>("PerfilId")
                         .HasColumnType("int");
@@ -559,7 +484,7 @@ namespace SistemaLirios.Migrations
 
                     b.HasIndex("ProdutoId");
 
-                    b.ToTable("Venda", (string)null);
+                    b.ToTable("Venda");
                 });
 
             modelBuilder.Entity("SistemaLirios.Models.PrestadorModel", b =>

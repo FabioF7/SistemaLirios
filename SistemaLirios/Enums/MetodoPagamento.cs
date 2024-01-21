@@ -7,6 +7,7 @@
         Pix = 2,
         Debito = 3,
         CreditoAVista = 4,
-        CreditoParcelado = 5
+        Parcelado = 5,
+        CreditoParcelado = 6
     }
 }

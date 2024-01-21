@@ -5,10 +5,10 @@ namespace SistemaLirios.Repository.Interfaces
     public interface IVendaRepository
     {
         Task<List<VendaModel>> BuscarTodosVendas();
-        Task<List<VendaModel>> BuscarPorId(int id);
-        Task<List<VendaModel>> BuscarPorCliente(int idCliente);
+        Task<VendaModel> BuscarPorId(int id);
+        Task<List<VendaModel>> BuscarPorIdCliente(int id);
 
-        Task<VendaModel> Insert(VendaModel Venda);
+        Task<List<VendaModel>> Insert(List<VendaModel> vendas);
         Task<VendaModel> Update(VendaModel Venda, int id);
 
         Task<bool> Delete(int id);

@@ -11,7 +11,7 @@ namespace SistemaLirios.Data.Map
             builder.HasKey(x => x.Id);
             builder.Property(x => x.Nome).IsRequired().HasMaxLength(455);
             builder.Property(x => x.OrigemId).IsRequired();
-            builder.Property(x => x.Codigo).IsRequired().HasMaxLength(15);
+            builder.Property(x => x.Codigo).HasMaxLength(15);
             builder.Property(x => x.CodigoDeBarra);
             builder.Property(x => x.ValorCusto).IsRequired();
             builder.Property(x => x.ValorVendaRevista);
@@ -23,7 +23,7 @@ namespace SistemaLirios.Data.Map
             builder.Property(x => x.AlteradoPor).HasMaxLength(55);
             builder.Property(x => x.DtAlteracao);
 
-            builder.HasOne(x => x.Origem);
+            builder.HasOne(x => x.Origem).WithMany().HasForeignKey(x => x.OrigemId);
         }
     }
 }

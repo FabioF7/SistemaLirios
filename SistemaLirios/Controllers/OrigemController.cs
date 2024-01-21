@@ -17,60 +17,88 @@ namespace SistemaLirios.Controllers
         }
 
         [HttpGet]
-        [Authorize]
+        [Authorize (Roles = "Admin")]
         public async Task<ActionResult<List<OrigemModel>>> BuscarTodasOrigens()
         {
-            List<OrigemModel> origem = await _origemRepository.BuscarTodasOrigens();
-
-            if (origem == null)
+            try
             {
-                return BadRequest("Nenhuma Origem encontrado!");
-            }
+                List<OrigemModel> origem = await _origemRepository.BuscarTodasOrigens();
 
-            return Ok(origem);
+                if (origem == null)
+                {
+                    return BadRequest("Nenhuma Origem encontrado!");
+                }
+
+                return Ok(origem);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest($"Ocorreu um Erro: {ex}");
+            }
         }
 
         [HttpPost]
-        [Authorize]
+        [Authorize (Roles = "Admin")]
         public async Task<ActionResult<OrigemModel>> Insert([FromBody] OrigemModel origemModel)
         {
-            OrigemModel origem = await _origemRepository.Insert(origemModel);
-
-            if (origem == null)
+            try
             {
-                return BadRequest("Não foi possível incluir origem");
-            }
+                OrigemModel origem = await _origemRepository.Insert(origemModel);
+
+                if (origem == null)
+                {
+                    return BadRequest("Não foi possível incluir origem");
+                }
             
-            return Ok(origem);
+                return Ok(origem);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest($"Ocorreu um Erro: {ex}");
+            }
         }
 
         [HttpPut("{id}")]
-        [Authorize]
+        [Authorize (Roles = "Admin")]
         public async Task<ActionResult<OrigemModel>> Update(int id, [FromBody] OrigemModel origemModel)
         {
-            origemModel.Id = id;
-            OrigemModel origem = await _origemRepository.Update(origemModel, id);
-
-            if (origem == null)
+            try
             {
-                return BadRequest("Não foi possível alterar origem!");
-            }
+                origemModel.Id = id;
+                OrigemModel origem = await _origemRepository.Update(origemModel, id);
 
-            return Ok(origem);
+                if (origem == null)
+                {
+                    return BadRequest("Não foi possível alterar origem!");
+                }
+
+                return Ok(origem);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest($"Ocorreu um Erro: {ex}");
+            }
         }
 
         [HttpDelete("{id}")]
-        [Authorize]
+        [Authorize (Roles = "Admin")]
         public async Task<ActionResult<OrigemModel>> Delete(int id)
         {
-            bool sucesso = await _origemRepository.Delete(id);
-
-            if (!sucesso)
+            try
             {
-                return BadRequest("Não foi possível excluir origem!");
-            }
+                bool sucesso = await _origemRepository.Delete(id);
 
-            return Ok(sucesso);
+                if (!sucesso)
+                {
+                    return BadRequest("Não foi possível excluir origem!");
+                }
+
+                return Ok(sucesso);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest($"Ocorreu um Erro: {ex}");
+            }
         }
     }
 }

@@ -1,8 +1,6 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SistemaLirios.Models;
-using SistemaLirios.Repository;
 using SistemaLirios.Repository.Interfaces;
 
 namespace SistemaLirios.Controllers
@@ -18,74 +16,109 @@ namespace SistemaLirios.Controllers
         }
 
         [HttpGet]
-        [Authorize]
+        [Authorize (Roles = "Admin")]
         public async Task<ActionResult<List<PerfilModel>>> BuscarTodosPerfis()
         {
-            List<PerfilModel> perfil = await _perfilRepository.BuscarTodosPerfis();
-
-            if(perfil == null)
+            try
             {
-                return BadRequest("Nenhum Perfil encontrado!");
-            }
+                List<PerfilModel> perfil = await _perfilRepository.BuscarTodosPerfis();
 
-            return Ok(perfil);
+                if(perfil == null)
+                {
+                    return BadRequest("Nenhum Perfil encontrado!");
+                }
+
+                return Ok(perfil);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest($"Ocorreu um Erro: {ex}");
+            }
         }
 
         [HttpGet("{id}")]
-        [Authorize]
+        [Authorize (Roles = "Admin")]
         public async Task<ActionResult<PerfilModel>> BuscarPorId(int id)
         {
-            PerfilModel perfil = await _perfilRepository.BuscarPorId(id);
-
-            if (perfil == null)
+            try
             {
-                return BadRequest("Perfil não encontrado!");
-            }
+                PerfilModel perfil = await _perfilRepository.BuscarPorId(id);
 
-            return Ok(perfil);
+                if (perfil == null)
+                {
+                    return BadRequest("Perfil não encontrado!");
+                }
+
+                return Ok(perfil);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest($"Ocorreu um Erro: {ex}");
+            }
         }
 
         [HttpPost]
-        [Authorize]
+        [Authorize (Roles = "Admin")]
         public async Task<ActionResult<PerfilModel>> Insert([FromBody] PerfilModel perfilModel)
         {
-            PerfilModel perfil = await _perfilRepository.Insert(perfilModel);
-
-            if (perfil == null)
+            try
             {
-                return BadRequest("Não foi possível incluir Perfil!");
-            }
+                PerfilModel perfil = await _perfilRepository.Insert(perfilModel);
 
-            return Ok(perfil);
+                if (perfil == null)
+                {
+                    return BadRequest("Não foi possível incluir Perfil!");
+                }
+
+                return Ok(perfil);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest($"Ocorreu um Erro: {ex}");
+            }
         }
 
         [HttpPut("{id}")]
-        [Authorize]
+        [Authorize (Roles = "Admin")]
         public async Task<ActionResult<PerfilModel>> Update(int id, [FromBody] PerfilModel perfilModel)
         {
-            perfilModel.Id = id;
-            PerfilModel perfil = await _perfilRepository.Update(perfilModel, id);
-
-            if (perfil == null)
+            try
             {
-                return BadRequest("Não foi possível alterar Perfil!");
-            }
+                perfilModel.Id = id;
+                PerfilModel perfil = await _perfilRepository.Update(perfilModel, id);
 
-            return Ok(perfil);
+                if (perfil == null)
+                {
+                    return BadRequest("Não foi possível alterar Perfil!");
+                }
+
+                return Ok(perfil);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest($"Ocorreu um Erro: {ex}");
+            }
         }
 
         [HttpDelete("{id}")]
-        [Authorize]
+        [Authorize (Roles = "Admin")]
         public async Task<ActionResult<PerfilModel>> Delete(int id)
         {
-            bool sucesso = await _perfilRepository.Delete(id);
-
-            if (!sucesso)
+            try
             {
-                return BadRequest("Não foi possível excluir Perfil!");
-            }
+                bool sucesso = await _perfilRepository.Delete(id);
 
-            return Ok(sucesso);
+                if (!sucesso)
+                {
+                    return BadRequest("Não foi possível excluir Perfil!");
+                }
+
+                return Ok(sucesso);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest($"Ocorreu um Erro: {ex}");
+            }
         }
     }
 }
