@@ -63,15 +63,14 @@ namespace SistemaLirios.Repository
             produtoPorId.IdCategoria = produto.IdCategoria;
             produtoPorId.DtAlteracao = produto.DtAlteracao;
             produtoPorId.Quantidade = produto.Quantidade;
-            produtoPorId.Ativo = produto.Ativo;
             produtoPorId.AlteradoPor = produto.AlteradoPor;
 
             _dbContext.Produto.Update(produtoPorId);
             await _dbContext.SaveChangesAsync();
 
             return produtoPorId;
+        }
 
-    }
         public async Task<bool> Delete(int id)
         {
             ProdutoModel produtoPorId = await BuscarPorId(id);

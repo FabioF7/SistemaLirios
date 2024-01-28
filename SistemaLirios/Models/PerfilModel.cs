@@ -10,6 +10,6 @@ namespace SistemaLirios.Models
         public string? DescricaoPerfil { get; set; }
         public int Ativo { get; set; }
         public DateTime DtCadastro { get; set; }
-        public DateTime DtAlteracao { get; set; }
+        public DateTime? DtAlteracao { get; set; }
     }
 }

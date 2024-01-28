@@ -8,10 +8,9 @@ namespace SistemaLirios.Models
         public int ClienteId { get; set; }
         public virtual ClienteModel? Cliente { get; set; }
         public float ValorPago { get; set; }
-        public int Tipo { get; set; } // 0 - Positivo 1 - Negativo
+        public TipoTransacao TipoTransacao { get; set; }
         public MetodoPagamento MetodoPagamento { get; set; }
         public DateTime DtPagamento { get; set; }
         public string? CadastradoPor { get; set; }
-  
     }
 }

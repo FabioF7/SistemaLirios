@@ -35,6 +35,7 @@ namespace SistemaLirios
             services.AddScoped<IClienteRepository, ClienteRepository>();
             services.AddScoped<IGastosRepository, GastosRepository>();
             services.AddScoped<IOrigemRepository, OrigemRepository>();
+            services.AddScoped<IPagamentoRepository, PagamentoRepository>();
             services.AddScoped<IPerfilRepository, PerfilRepository>();
             services.AddScoped<IPrestadorRepository, PrestadorRepository>();
             services.AddScoped<IProdutoRepository, ProdutoRepository>();

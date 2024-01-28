@@ -12,7 +12,6 @@
         public float ValorVendaRevista { get; set; }
         public int? IdCategoria { get; set; } //Verificar se irá criar Enum
         public int Quantidade { get; set; }
-        public int Ativo { get; set; }
         public string? CadastradoPor { get; set; }
         public DateTime? DtCadastro { get; set; }
         public string? AlteradoPor { get; set; }

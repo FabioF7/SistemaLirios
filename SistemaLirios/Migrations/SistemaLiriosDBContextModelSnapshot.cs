@@ -17,7 +17,7 @@ namespace SistemaLirios.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "7.0.13")
+                .HasAnnotation("ProductVersion", "8.0.1")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -38,7 +38,6 @@ namespace SistemaLirios.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("CEP")
-                        .IsRequired()
                         .HasMaxLength(8)
                         .HasColumnType("nvarchar(8)");
 
@@ -47,7 +46,7 @@ namespace SistemaLirios.Migrations
                         .HasMaxLength(55)
                         .HasColumnType("nvarchar(55)");
 
-                    b.Property<long>("Celular")
+                    b.Property<long?>("Celular")
                         .HasColumnType("bigint");
 
                     b.Property<DateTime?>("DtAlteracao")
@@ -57,7 +56,7 @@ namespace SistemaLirios.Migrations
                         .IsRequired()
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime>("DtNascimento")
+                    b.Property<DateTime?>("DtNascimento")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Email")
@@ -65,24 +64,32 @@ namespace SistemaLirios.Migrations
                         .HasColumnType("nvarchar(255)");
 
                     b.Property<string>("Endereco")
-                        .IsRequired()
                         .HasMaxLength(1000)
                         .HasColumnType("nvarchar(1000)");
 
+                    b.Property<int>("Inadimplencia")
+                        .HasColumnType("int");
+
                     b.Property<int?>("Indicacao")
                         .HasColumnType("int");
+
+                    b.Property<double?>("LimiteInadimplencia")
+                        .HasColumnType("float");
 
                     b.Property<string>("Nome")
                         .IsRequired()
                         .HasMaxLength(255)
                         .HasColumnType("nvarchar(255)");
 
+                    b.Property<string>("Observacoes")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<int>("Sexo")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Cliente", (string)null);
+                    b.ToTable("Cliente");
                 });
 
             modelBuilder.Entity("SistemaLirios.Models.GastosModel", b =>
@@ -117,12 +124,17 @@ namespace SistemaLirios.Migrations
                     b.Property<int>("Recorrente")
                         .HasColumnType("int");
 
+                    b.Property<int>("TipoServicoId")
+                        .HasColumnType("int");
+
                     b.Property<float>("Valor")
                         .HasColumnType("real");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Gastos", (string)null);
+                    b.HasIndex("TipoServicoId");
+
+                    b.ToTable("Gastos");
                 });
 
             modelBuilder.Entity("SistemaLirios.Models.OrigemModel", b =>
@@ -137,7 +149,8 @@ namespace SistemaLirios.Migrations
                         .HasMaxLength(55)
                         .HasColumnType("nvarchar(55)");
 
-                    b.Property<int>("Ativo")
+                    b.Property<int?>("Ativo")
+                        .IsRequired()
                         .HasColumnType("int");
 
                     b.Property<string>("CadastradoPor")
@@ -145,10 +158,11 @@ namespace SistemaLirios.Migrations
                         .HasMaxLength(55)
                         .HasColumnType("nvarchar(55)");
 
-                    b.Property<DateTime>("DtAlteracao")
+                    b.Property<DateTime?>("DtAlteracao")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime>("DtCadastro")
+                    b.Property<DateTime?>("DtCadastro")
+                        .IsRequired()
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Nome")
@@ -158,10 +172,10 @@ namespace SistemaLirios.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Origem", (string)null);
+                    b.ToTable("Origem");
                 });
 
-            modelBuilder.Entity("SistemaLirios.Models.PerfilModel", b =>
+            modelBuilder.Entity("SistemaLirios.Models.PagamentoModel", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -169,28 +183,30 @@ namespace SistemaLirios.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("Ativo")
+                    b.Property<string>("CadastradoPor")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("ClienteId")
                         .HasColumnType("int");
 
-                    b.Property<string>("DescricaoPerfil")
-                        .IsRequired()
-                        .HasMaxLength(250)
-                        .HasColumnType("nvarchar(250)");
-
-                    b.Property<DateTime>("DtAlteracao")
+                    b.Property<DateTime>("DtPagamento")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime>("DtCadastro")
-                        .HasColumnType("datetime2");
+                    b.Property<int>("MetodoPagamento")
+                        .HasColumnType("int");
 
-                    b.Property<string>("NomePerfil")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
+                    b.Property<int>("TipoTransacao")
+                        .HasColumnType("int");
+
+                    b.Property<float>("ValorPago")
+                        .HasColumnType("real");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Perfil", (string)null);
+                    b.HasIndex("ClienteId");
+
+                    b.ToTable("Pagamento");
                 });
 
             modelBuilder.Entity("SistemaLirios.Models.PerfilModel", b =>
@@ -209,7 +225,7 @@ namespace SistemaLirios.Migrations
                         .HasMaxLength(250)
                         .HasColumnType("nvarchar(250)");
 
-                    b.Property<DateTime>("DtAlteracao")
+                    b.Property<DateTime?>("DtAlteracao")
                         .HasColumnType("datetime2");
 
                     b.Property<DateTime>("DtCadastro")
@@ -245,7 +261,7 @@ namespace SistemaLirios.Migrations
                         .HasMaxLength(55)
                         .HasColumnType("nvarchar(55)");
 
-                    b.Property<DateTime>("DtAlteracao")
+                    b.Property<DateTime?>("DtAlteracao")
                         .HasColumnType("datetime2");
 
                     b.Property<DateTime>("DtCadastro")
@@ -268,7 +284,7 @@ namespace SistemaLirios.Migrations
 
                     b.HasIndex("TipoServicoId");
 
-                    b.ToTable("Prestador", (string)null);
+                    b.ToTable("Prestador");
                 });
 
             modelBuilder.Entity("SistemaLirios.Models.ProdutoModel", b =>
@@ -283,29 +299,26 @@ namespace SistemaLirios.Migrations
                         .HasMaxLength(55)
                         .HasColumnType("nvarchar(55)");
 
-                    b.Property<int>("Ativo")
-                        .HasColumnType("int");
-
                     b.Property<string>("CadastradoPor")
                         .IsRequired()
                         .HasMaxLength(55)
                         .HasColumnType("nvarchar(55)");
 
                     b.Property<string>("Codigo")
-                        .IsRequired()
                         .HasMaxLength(15)
                         .HasColumnType("nvarchar(15)");
 
-                    b.Property<int>("CodigoDeBarra")
-                        .HasColumnType("int");
+                    b.Property<long?>("CodigoDeBarra")
+                        .HasColumnType("bigint");
 
-                    b.Property<DateTime>("DtAlteracao")
+                    b.Property<DateTime?>("DtAlteracao")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime>("DtCadastro")
+                    b.Property<DateTime?>("DtCadastro")
+                        .IsRequired()
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("IdCategoria")
+                    b.Property<int?>("IdCategoria")
                         .HasColumnType("int");
 
                     b.Property<string>("Nome")
@@ -329,7 +342,7 @@ namespace SistemaLirios.Migrations
 
                     b.HasIndex("OrigemId");
 
-                    b.ToTable("Produto", (string)null);
+                    b.ToTable("Produto");
                 });
 
             modelBuilder.Entity("SistemaLirios.Models.ServicoModel", b =>
@@ -352,7 +365,7 @@ namespace SistemaLirios.Migrations
                         .HasMaxLength(55)
                         .HasColumnType("nvarchar(55)");
 
-                    b.Property<DateTime>("DtAlteracao")
+                    b.Property<DateTime?>("DtAlteracao")
                         .HasColumnType("datetime2");
 
                     b.Property<DateTime>("DtCadastro")
@@ -373,7 +386,7 @@ namespace SistemaLirios.Migrations
 
                     b.HasIndex("TipoServicoId");
 
-                    b.ToTable("Servico", (string)null);
+                    b.ToTable("Servico");
                 });
 
             modelBuilder.Entity("SistemaLirios.Models.TipoServicoModel", b =>
@@ -396,7 +409,7 @@ namespace SistemaLirios.Migrations
                         .HasMaxLength(55)
                         .HasColumnType("nvarchar(55)");
 
-                    b.Property<DateTime>("DtAlteracao")
+                    b.Property<DateTime?>("DtAlteracao")
                         .HasColumnType("datetime2");
 
                     b.Property<DateTime>("DtCadastro")
@@ -409,7 +422,7 @@ namespace SistemaLirios.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("TipoServico", (string)null);
+                    b.ToTable("TipoServico");
                 });
 
             modelBuilder.Entity("SistemaLirios.Models.UsuarioModel", b =>
@@ -423,7 +436,7 @@ namespace SistemaLirios.Migrations
                     b.Property<int>("Ativo")
                         .HasColumnType("int");
 
-                    b.Property<DateTime>("DtAlteracao")
+                    b.Property<DateTime?>("DtAlteracao")
                         .HasColumnType("datetime2");
 
                     b.Property<DateTime>("DtCadastro")
@@ -445,9 +458,6 @@ namespace SistemaLirios.Migrations
                         .IsRequired()
                         .HasColumnType("varbinary(max)");
 
-                    b.Property<int?>("PerfilId")
-                        .HasColumnType("int");
-
                     b.Property<string>("Usuario")
                         .IsRequired()
                         .HasMaxLength(100)
@@ -455,53 +465,7 @@ namespace SistemaLirios.Migrations
 
                     b.HasKey("UserID");
 
-                    b.HasIndex("PerfilId");
-
-                    b.ToTable("Usuario", (string)null);
-                });
-
-            modelBuilder.Entity("SistemaLirios.Models.UsuarioModel", b =>
-                {
-                    b.Property<int>("UserID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("UserID"));
-
-                    b.Property<int>("Ativo")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("DtAlteracao")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime>("DtCadastro")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("IdPerfil")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Nome")
-                        .IsRequired()
-                        .HasMaxLength(150)
-                        .HasColumnType("nvarchar(150)");
-
-                    b.Property<byte>("PasswordHash")
-                        .HasColumnType("tinyint");
-
-                    b.Property<byte>("PasswordSalt")
-                        .HasColumnType("tinyint");
-
-                    b.Property<int?>("PerfilId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Usuario")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.HasKey("UserID");
-
-                    b.HasIndex("PerfilId");
+                    b.HasIndex("IdPerfil");
 
                     b.ToTable("Usuario");
                 });
@@ -529,19 +493,26 @@ namespace SistemaLirios.Migrations
                     b.Property<float>("CustoProduto")
                         .HasColumnType("real");
 
-                    b.Property<DateTime>("DtAlteracao")
+                    b.Property<DateTime?>("DtAlteracao")
                         .HasColumnType("datetime2");
 
                     b.Property<DateTime>("DtVenda")
                         .HasColumnType("datetime2");
 
+                    b.Property<int>("IdVenda")
+                        .HasColumnType("int");
+
                     b.Property<int>("MetodoPagamento")
                         .HasColumnType("int");
 
-                    b.Property<int>("PreVenda")
+                    b.Property<int?>("PreVenda")
+                        .IsRequired()
                         .HasColumnType("int");
 
                     b.Property<int>("ProdutoId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Quantidade")
                         .HasColumnType("int");
 
                     b.Property<int>("Tipo")
@@ -559,7 +530,29 @@ namespace SistemaLirios.Migrations
 
                     b.HasIndex("ProdutoId");
 
-                    b.ToTable("Venda", (string)null);
+                    b.ToTable("Venda");
+                });
+
+            modelBuilder.Entity("SistemaLirios.Models.GastosModel", b =>
+                {
+                    b.HasOne("SistemaLirios.Models.TipoServicoModel", "TipoServico")
+                        .WithMany()
+                        .HasForeignKey("TipoServicoId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("TipoServico");
+                });
+
+            modelBuilder.Entity("SistemaLirios.Models.PagamentoModel", b =>
+                {
+                    b.HasOne("SistemaLirios.Models.ClienteModel", "Cliente")
+                        .WithMany()
+                        .HasForeignKey("ClienteId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Cliente");
                 });
 
             modelBuilder.Entity("SistemaLirios.Models.PrestadorModel", b =>
@@ -599,7 +592,9 @@ namespace SistemaLirios.Migrations
                 {
                     b.HasOne("SistemaLirios.Models.PerfilModel", "Perfil")
                         .WithMany()
-                        .HasForeignKey("PerfilId");
+                        .HasForeignKey("IdPerfil")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Perfil");
                 });

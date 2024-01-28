@@ -17,7 +17,6 @@ namespace SistemaLirios.Data.Map
             builder.Property(x => x.ValorVendaRevista);
             builder.Property(x => x.IdCategoria);
             builder.Property(x => x.Quantidade).IsRequired();
-            builder.Property(x => x.Ativo).IsRequired();
             builder.Property(x => x.CadastradoPor).IsRequired().HasMaxLength(55);
             builder.Property(x => x.DtCadastro).IsRequired();
             builder.Property(x => x.AlteradoPor).HasMaxLength(55);

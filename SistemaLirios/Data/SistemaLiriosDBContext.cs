@@ -14,6 +14,7 @@ namespace SistemaLirios.Data
         public DbSet<ClienteModel> Cliente { get; set; }
         public DbSet<GastosModel> Gastos { get; set; }
         public DbSet<OrigemModel> Origem { get; set; }
+        public DbSet<PagamentoModel> Pagamento { get; set; }
         public DbSet<PerfilModel> Perfil { get; set; }
         public DbSet<PrestadorModel> Prestador { get; set; }
         public DbSet<ProdutoModel> Produto { get; set; }
@@ -29,6 +30,7 @@ namespace SistemaLirios.Data
             modelBuilder.ApplyConfiguration(new VendaMap());
             modelBuilder.ApplyConfiguration(new GastosMap());
             modelBuilder.ApplyConfiguration(new OrigemMap());
+            modelBuilder.ApplyConfiguration(new PagamentoMap());
             modelBuilder.ApplyConfiguration(new PrestadorMap());
             modelBuilder.ApplyConfiguration(new ServicoMap());
             modelBuilder.ApplyConfiguration(new TipoServicoMap());
