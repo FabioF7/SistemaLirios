@@ -64,10 +64,10 @@ namespace SistemaLirios.Repository
             return true;
         }
 
-        public float RetornaDivida(List<PagamentoModel> pagamento, List<VendaModel> venda)
+        public double RetornaDivida(List<PagamentoModel> pagamento, List<VendaModel> venda)
         {
-            float valorGasto = 0.00f;
-            float valorPago = 0.00f;
+            double valorGasto = 0.00f;
+            double valorPago = 0.00f;
             
             foreach (var vendas in venda)
             {

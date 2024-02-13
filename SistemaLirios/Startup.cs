@@ -1,9 +1,4 @@
-﻿using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using SistemaLirios.Data;
 using SistemaLirios.Repository;
 using SistemaLirios.Repository.Interfaces;
@@ -46,7 +41,6 @@ namespace SistemaLirios
 
             services.AddSwaggerGen();
 
-
             services.AddAuthentication(x =>
             {
                 x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -58,7 +52,7 @@ namespace SistemaLirios
                     options.TokenValidationParameters = new TokenValidationParameters
                     {
                         ValidateIssuerSigningKey = true,
-                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Environment.GetEnvironmentVariable("CHAVE_SECRETA_JWT"))),
+                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration.GetSection("Chave_JWT")["CHAVE_SECRETA_JWT"])),
                         ValidateIssuer = false,
                         ValidateAudience = false
                     };
@@ -71,11 +65,8 @@ namespace SistemaLirios
         // Este método é chamado em tempo de execução. Use este método para configurar o pipeline de solicitação.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            if (env.IsDevelopment())
-            {
-                app.UseSwagger();
-                app.UseSwaggerUI();
-            }
+            app.UseSwagger();
+            app.UseSwaggerUI();
 
             app.UseHttpsRedirection();
 

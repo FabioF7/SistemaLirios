@@ -18,7 +18,7 @@ namespace SistemaLirios.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     ClienteId = table.Column<int>(type: "int", nullable: false),
-                    ValorPago = table.Column<float>(type: "real", nullable: false),
+                    ValorPago = table.Column<float>(type: "float", nullable: false),
                     TipoTransacao = table.Column<int>(type: "int", nullable: false),
                     MetodoPagamento = table.Column<int>(type: "int", nullable: false),
                     DtPagamento = table.Column<DateTime>(type: "datetime2", nullable: false),

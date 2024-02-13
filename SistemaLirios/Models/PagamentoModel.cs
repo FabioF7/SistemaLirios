@@ -7,7 +7,7 @@ namespace SistemaLirios.Models
         public int Id { get; set; }
         public int ClienteId { get; set; }
         public virtual ClienteModel? Cliente { get; set; }
-        public float ValorPago { get; set; }
+        public double ValorPago { get; set; }
         public TipoTransacao TipoTransacao { get; set; }
         public MetodoPagamento MetodoPagamento { get; set; }
         public DateTime DtPagamento { get; set; }
