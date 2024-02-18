@@ -101,11 +101,11 @@
               "type": "Microsoft.ApiManagement/service/apis",
               "name": "SistemaLirios-apim/echo-api",
               "properties": {
-                "displayName": "Echo API",
+                "displayName": "SistemaLirios",
                 "apiRevision": "1",
                 "description": null,
                 "subscriptionRequired": true,
-                "serviceUrl": "http://echoapi.cloudapp.net/api",
+                "serviceUrl": "https://sistemalirios.azurewebsites.net",
                 "path": "echo",
                 "protocols": [
                   "https"

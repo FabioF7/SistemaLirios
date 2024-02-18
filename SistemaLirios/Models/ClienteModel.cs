@@ -12,10 +12,10 @@ namespace SistemaLirios.Models
         public string? CEP { get; set; }
         public string? Endereco { get; set; }
         public DateTime? DtNascimento { get; set; }
-        public Sexo Sexo { get; set; }
+        public Sexo? Sexo { get; set; }
         public int? Indicacao { get; set; }
-        public int Bloqueado { get; set; }
-        public int Inadimplencia { get; set; }
+        public int? Bloqueado { get; set; }
+        public int? Inadimplencia { get; set; }
         public double? LimiteInadimplencia { get; set; }
         public string? Observacoes { get; set; }
         public string? CadastradoPor { get; set; }

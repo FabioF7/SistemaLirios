@@ -22,6 +22,7 @@ namespace SistemaLirios.Data
         public DbSet<TipoServicoModel> TipoServico { get; set; }
         public DbSet<UsuarioModel> Usuario { get; set; }
         public DbSet<VendaModel> Venda { get; set; }
+        public DbSet<HistoricoModel> Historico { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -36,6 +37,7 @@ namespace SistemaLirios.Data
             modelBuilder.ApplyConfiguration(new TipoServicoMap());
             modelBuilder.ApplyConfiguration(new UsuarioMap());
             modelBuilder.ApplyConfiguration(new PerfilMap());
+            modelBuilder.Entity<HistoricoModel>().HasNoKey();
 
             base.OnModelCreating(modelBuilder);
         }

@@ -1,4 +1,9 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+using Microsoft.EntityFrameworkCore;
 using SistemaLirios.Data;
 using SistemaLirios.Repository;
 using SistemaLirios.Repository.Interfaces;
@@ -24,7 +29,7 @@ namespace SistemaLirios
 
             services.AddEntityFrameworkSqlServer()
                 .AddDbContext<SistemaLiriosDBContext>(
-                    options => options.UseSqlServer(Configuration.GetConnectionString("DataBase"))
+                    options => options.UseSqlServer(Configuration.GetConnectionString("DataBase")), ServiceLifetime.Scoped
                 );
 
             services.AddScoped<IClienteRepository, ClienteRepository>();
@@ -38,6 +43,7 @@ namespace SistemaLirios
             services.AddScoped<ITipoServicoRepository, TipoServicoRepository>();
             services.AddScoped<IUsuarioRepository, UsuarioRepository>();
             services.AddScoped<IVendaRepository, VendaRepository>();
+            services.AddScoped<IRelatorioRepository, RelatorioRepository>();
 
             services.AddSwaggerGen();
 

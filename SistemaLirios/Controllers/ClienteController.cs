@@ -1,8 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SistemaLirios.Models;
-using SistemaLirios.Repository;
 using SistemaLirios.Repository.Interfaces;
 
 namespace SistemaLirios.Controllers

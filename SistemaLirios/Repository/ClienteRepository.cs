@@ -2,7 +2,6 @@
 using SistemaLirios.Data;
 using SistemaLirios.Models;
 using SistemaLirios.Repository.Interfaces;
-using System.Linq;
 
 namespace SistemaLirios.Repository
 {
@@ -35,28 +34,55 @@ namespace SistemaLirios.Repository
 
         public async Task<ClienteModel> Update(ClienteModel Cliente, int id)
         {
-            ClienteModel clientePorId = await BuscarPorId(id);
+            try
+            {
+                ClienteModel clientePorId = await BuscarPorId(id);
 
-            clientePorId.Nome = Cliente.Nome;
-            clientePorId.Email = Cliente.Email;
-            clientePorId.Celular = Cliente.Celular;
-            clientePorId.CEP = Cliente.CEP;
-            clientePorId.Endereco = Cliente.Endereco;
-            clientePorId.DtNascimento = Cliente.DtNascimento;
-            clientePorId.Sexo = Cliente.Sexo;
-            clientePorId.Indicacao = Cliente.Indicacao;
-            clientePorId.Bloqueado = Cliente.Bloqueado;
-            clientePorId.Inadimplencia = Cliente.Inadimplencia;
-            clientePorId.LimiteInadimplencia = Cliente.LimiteInadimplencia;
-            clientePorId.Observacoes = Cliente.Observacoes;
-            clientePorId.AlteradoPor = Cliente.AlteradoPor;
-            clientePorId.DtAlteracao = Cliente.DtAlteracao;
+                if (Cliente.Nome == null && Cliente.Celular == null)
+                {
+                    if (Cliente.Inadimplencia == 1 && clientePorId.Inadimplencia == 0)
+                    {
+                        clientePorId.Inadimplencia = Cliente.Inadimplencia;
 
+                        _dbContext.Cliente.Update(clientePorId);
+                        await _dbContext.SaveChangesAsync();
+                    }
+                    else if(Cliente.Inadimplencia == 0 && clientePorId.Inadimplencia == 1)
+                    {
+                        clientePorId.Inadimplencia = Cliente.Inadimplencia;
 
-            _dbContext.Cliente.Update(clientePorId);
-            await _dbContext.SaveChangesAsync();
+                        _dbContext.Cliente.Update(clientePorId);
+                        await _dbContext.SaveChangesAsync();
+                    }
 
-            return clientePorId;
+                    return clientePorId;
+                }
+
+                clientePorId.Nome = Cliente.Nome;
+                clientePorId.Email = Cliente.Email;
+                clientePorId.Celular = Cliente.Celular;
+                clientePorId.CEP = Cliente.CEP;
+                clientePorId.Endereco = Cliente.Endereco;
+                clientePorId.DtNascimento = Cliente.DtNascimento;
+                clientePorId.Sexo = Cliente.Sexo;
+                clientePorId.Indicacao = Cliente.Indicacao;
+                clientePorId.Bloqueado = Cliente.Bloqueado;
+                clientePorId.Inadimplencia = Cliente.Inadimplencia;
+                clientePorId.LimiteInadimplencia = Cliente.LimiteInadimplencia;
+                clientePorId.Observacoes = Cliente.Observacoes;
+                clientePorId.AlteradoPor = Cliente.AlteradoPor;
+                clientePorId.DtAlteracao = Cliente.DtAlteracao;
+
+                _dbContext.Cliente.Update(clientePorId);
+                await _dbContext.SaveChangesAsync();
+
+                return clientePorId;
+            }
+            catch (Exception ex)
+            {
+                ClienteModel clientePorI = new ClienteModel();
+                return clientePorI;
+            }
         }
 
         public async Task<bool> Delete(int id)
