@@ -69,37 +69,42 @@ namespace SistemaLirios.Repository
 
         public async Task<double> RetornaDivida(List<PagamentoModel> pagamento, List<VendaModel> venda)
         {
-            double valorGasto = 0.00f;
-            double valorPago = 0.00f;
-            
-            foreach (var vendas in venda)
+            if (pagamento.Count > 0 && venda.Count > 0)
             {
-                if (vendas.TipoTransacao == 0)
+                double valorGasto = 0.00f;
+                double valorPago = 0.00f;
+
+                foreach (var vendas in venda)
                 {
-                    valorGasto += vendas.ValorVenda * vendas.Quantidade;
+                    if (vendas.TipoTransacao == 0)
+                    {
+                        valorGasto += vendas.ValorVenda * vendas.Quantidade;
+                    }
                 }
+
+                foreach (var pagamentos in pagamento)
+                {
+                    if (pagamentos.TipoTransacao == 0)
+                    {
+                        valorPago += pagamentos.ValorPago;
+                    }
+                    else
+                    {
+                        valorPago -= pagamentos.ValorPago;
+                    }
+                }
+
+                double result = 0.00f;
+                result = valorGasto - valorPago;
+                string formatado = result.ToString("F2");
+                result = double.Parse(formatado);
+
+                AtualizaInadimplencia(result, venda.FirstOrDefault().ClienteId);
+
+                return await Task.FromResult(result);
             }
 
-            foreach (var pagamentos in pagamento)
-            {
-                if (pagamentos.TipoTransacao == 0)
-                {
-                    valorPago += pagamentos.ValorPago;
-                }
-                else
-                {
-                    valorPago -= pagamentos.ValorPago;
-                }
-            }
-
-            double result = 0.00f;
-            result = valorGasto - valorPago;
-            string formatado = result.ToString("F2");
-            result = double.Parse(formatado);
-
-            AtualizaInadimplencia(result, venda.FirstOrDefault().ClienteId);
-
-            return await Task.FromResult(result);
+            return await Task.FromResult(0);
         }
 
         public async void AtualizaInadimplencia(double result, int id)

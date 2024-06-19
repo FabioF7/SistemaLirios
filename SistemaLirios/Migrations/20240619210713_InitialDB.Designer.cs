@@ -2,9 +2,9 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using SistemaLirios.Data;
 
 #nullable disable
@@ -12,83 +12,84 @@ using SistemaLirios.Data;
 namespace SistemaLirios.Migrations
 {
     [DbContext(typeof(SistemaLiriosDBContext))]
-    [Migration("20240126174650_Pagamento")]
-    partial class Pagamento
+    [Migration("20240619210713_InitialDB")]
+    partial class InitialDB
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "8.0.1")
-                .HasAnnotation("Relational:MaxIdentifierLength", 128);
+                .HasAnnotation("ProductVersion", "8.0.6")
+                .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
-            SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
+            NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
             modelBuilder.Entity("SistemaLirios.Models.ClienteModel", b =>
                 {
                     b.Property<int?>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int?>("Id"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int?>("Id"));
 
                     b.Property<string>("AlteradoPor")
                         .HasMaxLength(55)
-                        .HasColumnType("nvarchar(55)");
+                        .HasColumnType("character varying(55)");
 
-                    b.Property<int>("Bloqueado")
-                        .HasColumnType("int");
+                    b.Property<int?>("Bloqueado")
+                        .IsRequired()
+                        .HasColumnType("integer");
 
                     b.Property<string>("CEP")
                         .HasMaxLength(8)
-                        .HasColumnType("nvarchar(8)");
+                        .HasColumnType("character varying(8)");
 
                     b.Property<string>("CadastradoPor")
                         .IsRequired()
                         .HasMaxLength(55)
-                        .HasColumnType("nvarchar(55)");
+                        .HasColumnType("character varying(55)");
 
                     b.Property<long?>("Celular")
                         .HasColumnType("bigint");
 
                     b.Property<DateTime?>("DtAlteracao")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("timestamp with time zone");
 
-                    b.Property<DateTime?>("DtCadastro")
-                        .IsRequired()
-                        .HasColumnType("datetime2");
+                    b.Property<DateTime>("DtCadastro")
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<DateTime?>("DtNascimento")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("Email")
                         .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)");
+                        .HasColumnType("character varying(255)");
 
                     b.Property<string>("Endereco")
                         .HasMaxLength(1000)
-                        .HasColumnType("nvarchar(1000)");
+                        .HasColumnType("character varying(1000)");
 
-                    b.Property<int>("Inadimplencia")
-                        .HasColumnType("int");
+                    b.Property<int?>("Inadimplencia")
+                        .IsRequired()
+                        .HasColumnType("integer");
 
                     b.Property<int?>("Indicacao")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.Property<double?>("LimiteInadimplencia")
-                        .HasColumnType("float");
+                        .HasColumnType("double precision");
 
                     b.Property<string>("Nome")
                         .IsRequired()
                         .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)");
+                        .HasColumnType("character varying(255)");
 
                     b.Property<string>("Observacoes")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.Property<int>("Sexo")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.HasKey("Id");
 
@@ -99,36 +100,35 @@ namespace SistemaLirios.Migrations
                 {
                     b.Property<int?>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int?>("Id"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int?>("Id"));
 
                     b.Property<string>("AlteradoPor")
                         .HasMaxLength(55)
-                        .HasColumnType("nvarchar(55)");
+                        .HasColumnType("character varying(55)");
 
                     b.Property<string>("CadastradoPor")
                         .IsRequired()
                         .HasMaxLength(55)
-                        .HasColumnType("nvarchar(55)");
+                        .HasColumnType("character varying(55)");
 
                     b.Property<DateTime?>("DtAlteracao")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("timestamp with time zone");
 
-                    b.Property<DateTime?>("DtCadastro")
-                        .IsRequired()
-                        .HasColumnType("datetime2");
+                    b.Property<DateTime>("DtCadastro")
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("NomeGasto")
                         .IsRequired()
                         .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)");
+                        .HasColumnType("character varying(255)");
 
                     b.Property<int>("Recorrente")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.Property<int>("TipoServicoId")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.Property<float>("Valor")
                         .HasColumnType("real");
@@ -140,38 +140,135 @@ namespace SistemaLirios.Migrations
                     b.ToTable("Gastos");
                 });
 
-            modelBuilder.Entity("SistemaLirios.Models.OrigemModel", b =>
+            modelBuilder.Entity("SistemaLirios.Models.HistoricoModel", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<double?>("CustoProduto")
+                        .HasColumnType("double precision");
+
+                    b.Property<DateTime?>("DataEvento")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<double?>("Lucro")
+                        .HasColumnType("double precision");
+
+                    b.Property<string>("Produto")
+                        .HasColumnType("text");
+
+                    b.Property<int?>("Quantidade")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("TipoEvento")
+                        .HasColumnType("text");
+
+                    b.Property<double?>("Valor")
+                        .HasColumnType("double precision");
+
+                    b.ToTable("Historico");
+                });
+
+            modelBuilder.Entity("SistemaLirios.Models.InventarioDetalhesModel", b =>
+                {
+                    b.Property<int?>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int?>("Id"));
 
-                    b.Property<string>("AlteradoPor")
-                        .HasMaxLength(55)
-                        .HasColumnType("nvarchar(55)");
-
-                    b.Property<int?>("Ativo")
+                    b.Property<int?>("Contabilizado")
                         .IsRequired()
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
-                    b.Property<string>("CadastradoPor")
+                    b.Property<int?>("IdInventario")
                         .IsRequired()
-                        .HasMaxLength(55)
-                        .HasColumnType("nvarchar(55)");
+                        .HasColumnType("integer");
 
-                    b.Property<DateTime?>("DtAlteracao")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime?>("DtCadastro")
+                    b.Property<int?>("IdProduto")
                         .IsRequired()
-                        .HasColumnType("datetime2");
+                        .HasColumnType("integer");
+
+                    b.Property<int?>("Previsao")
+                        .IsRequired()
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("IdInventario");
+
+                    b.HasIndex("IdProduto");
+
+                    b.ToTable("InventarioDetalhes");
+                });
+
+            modelBuilder.Entity("SistemaLirios.Models.InventarioModel", b =>
+                {
+                    b.Property<int?>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int?>("Id"));
+
+                    b.Property<DateTime?>("Concluido")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<int?>("Contabilizado_Total")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Contado_por")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("Inicio")
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("Nome")
                         .IsRequired()
                         .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)");
+                        .HasColumnType("character varying(255)");
+
+                    b.Property<string>("Obsevacoes")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Revisado_por")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Situacao")
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Inventario");
+                });
+
+            modelBuilder.Entity("SistemaLirios.Models.OrigemModel", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("AlteradoPor")
+                        .HasMaxLength(55)
+                        .HasColumnType("character varying(55)");
+
+                    b.Property<int?>("Ativo")
+                        .IsRequired()
+                        .HasColumnType("integer");
+
+                    b.Property<string>("CadastradoPor")
+                        .IsRequired()
+                        .HasMaxLength(55)
+                        .HasColumnType("character varying(55)");
+
+                    b.Property<DateTime?>("DtAlteracao")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTime>("DtCadastro")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Nome")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("character varying(255)");
 
                     b.HasKey("Id");
 
@@ -182,28 +279,28 @@ namespace SistemaLirios.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<string>("CadastradoPor")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.Property<int>("ClienteId")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.Property<DateTime>("DtPagamento")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<int>("MetodoPagamento")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.Property<int>("TipoTransacao")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
-                    b.Property<float>("ValorPago")
-                        .HasColumnType("real");
+                    b.Property<double>("ValorPago")
+                        .HasColumnType("double precision");
 
                     b.HasKey("Id");
 
@@ -216,28 +313,28 @@ namespace SistemaLirios.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<int>("Ativo")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.Property<string>("DescricaoPerfil")
                         .IsRequired()
                         .HasMaxLength(250)
-                        .HasColumnType("nvarchar(250)");
+                        .HasColumnType("character varying(250)");
 
                     b.Property<DateTime?>("DtAlteracao")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<DateTime>("DtCadastro")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("NomePerfil")
                         .IsRequired()
                         .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
+                        .HasColumnType("character varying(100)");
 
                     b.HasKey("Id");
 
@@ -248,40 +345,40 @@ namespace SistemaLirios.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<string>("AlteradoPor")
                         .HasMaxLength(55)
-                        .HasColumnType("nvarchar(55)");
+                        .HasColumnType("character varying(55)");
 
                     b.Property<int>("Ativo")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.Property<string>("CadastradoPor")
                         .IsRequired()
                         .HasMaxLength(55)
-                        .HasColumnType("nvarchar(55)");
+                        .HasColumnType("character varying(55)");
 
                     b.Property<DateTime?>("DtAlteracao")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<DateTime>("DtCadastro")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("Local")
                         .IsRequired()
                         .HasMaxLength(455)
-                        .HasColumnType("nvarchar(455)");
+                        .HasColumnType("character varying(455)");
 
                     b.Property<string>("Nome")
                         .IsRequired()
                         .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)");
+                        .HasColumnType("character varying(255)");
 
                     b.Property<int>("TipoServicoId")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.HasKey("Id");
 
@@ -294,52 +391,51 @@ namespace SistemaLirios.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<string>("AlteradoPor")
                         .HasMaxLength(55)
-                        .HasColumnType("nvarchar(55)");
+                        .HasColumnType("character varying(55)");
 
                     b.Property<string>("CadastradoPor")
                         .IsRequired()
                         .HasMaxLength(55)
-                        .HasColumnType("nvarchar(55)");
+                        .HasColumnType("character varying(55)");
 
                     b.Property<string>("Codigo")
                         .HasMaxLength(15)
-                        .HasColumnType("nvarchar(15)");
+                        .HasColumnType("character varying(15)");
 
                     b.Property<long?>("CodigoDeBarra")
                         .HasColumnType("bigint");
 
                     b.Property<DateTime?>("DtAlteracao")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("timestamp with time zone");
 
-                    b.Property<DateTime?>("DtCadastro")
-                        .IsRequired()
-                        .HasColumnType("datetime2");
+                    b.Property<DateTime>("DtCadastro")
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<int?>("IdCategoria")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.Property<string>("Nome")
                         .IsRequired()
                         .HasMaxLength(455)
-                        .HasColumnType("nvarchar(455)");
+                        .HasColumnType("character varying(455)");
 
                     b.Property<int>("OrigemId")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.Property<int>("Quantidade")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
-                    b.Property<float>("ValorCusto")
-                        .HasColumnType("real");
+                    b.Property<double>("ValorCusto")
+                        .HasColumnType("double precision");
 
-                    b.Property<float>("ValorVendaRevista")
-                        .HasColumnType("real");
+                    b.Property<double>("ValorVendaRevista")
+                        .HasColumnType("double precision");
 
                     b.HasKey("Id");
 
@@ -352,35 +448,35 @@ namespace SistemaLirios.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<string>("AlteradoPor")
                         .HasMaxLength(55)
-                        .HasColumnType("nvarchar(55)");
+                        .HasColumnType("character varying(55)");
 
                     b.Property<int>("Ativo")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.Property<string>("CadastradoPor")
                         .IsRequired()
                         .HasMaxLength(55)
-                        .HasColumnType("nvarchar(55)");
+                        .HasColumnType("character varying(55)");
 
                     b.Property<DateTime?>("DtAlteracao")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<DateTime>("DtCadastro")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("Nome")
                         .IsRequired()
                         .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)");
+                        .HasColumnType("character varying(255)");
 
                     b.Property<int>("TipoServicoId")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.Property<float>("Valor")
                         .HasColumnType("real");
@@ -396,32 +492,32 @@ namespace SistemaLirios.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<string>("AlteradoPor")
                         .HasMaxLength(55)
-                        .HasColumnType("nvarchar(55)");
+                        .HasColumnType("character varying(55)");
 
                     b.Property<int>("Ativo")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.Property<string>("CadastradoPor")
                         .IsRequired()
                         .HasMaxLength(55)
-                        .HasColumnType("nvarchar(55)");
+                        .HasColumnType("character varying(55)");
 
                     b.Property<DateTime?>("DtAlteracao")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<DateTime>("DtCadastro")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("NomeTipoServico")
                         .IsRequired()
                         .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
+                        .HasColumnType("character varying(100)");
 
                     b.HasKey("Id");
 
@@ -432,39 +528,39 @@ namespace SistemaLirios.Migrations
                 {
                     b.Property<int>("UserID")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("UserID"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("UserID"));
 
                     b.Property<int>("Ativo")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.Property<DateTime?>("DtAlteracao")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<DateTime>("DtCadastro")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<int>("IdPerfil")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.Property<string>("Nome")
                         .IsRequired()
                         .HasMaxLength(150)
-                        .HasColumnType("nvarchar(150)");
+                        .HasColumnType("character varying(150)");
 
                     b.Property<byte[]>("PasswordHash")
                         .IsRequired()
-                        .HasColumnType("varbinary(max)");
+                        .HasColumnType("bytea");
 
                     b.Property<byte[]>("PasswordSalt")
                         .IsRequired()
-                        .HasColumnType("varbinary(max)");
+                        .HasColumnType("bytea");
 
                     b.Property<string>("Usuario")
                         .IsRequired()
                         .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
+                        .HasColumnType("character varying(100)");
 
                     b.HasKey("UserID");
 
@@ -477,55 +573,58 @@ namespace SistemaLirios.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<string>("AlteradoPor")
                         .HasMaxLength(55)
-                        .HasColumnType("nvarchar(55)");
+                        .HasColumnType("character varying(55)");
 
                     b.Property<string>("CadastradoPor")
                         .IsRequired()
                         .HasMaxLength(55)
-                        .HasColumnType("nvarchar(55)");
+                        .HasColumnType("character varying(55)");
 
                     b.Property<int>("ClienteId")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
-                    b.Property<float>("CustoProduto")
-                        .HasColumnType("real");
+                    b.Property<double>("CustoProduto")
+                        .HasColumnType("double precision");
 
                     b.Property<DateTime?>("DtAlteracao")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<DateTime>("DtVenda")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<int>("IdVenda")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
+
+                    b.Property<double>("Lucro")
+                        .HasColumnType("double precision");
 
                     b.Property<int>("MetodoPagamento")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.Property<int?>("PreVenda")
                         .IsRequired()
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.Property<int>("ProdutoId")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.Property<int>("Quantidade")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.Property<int>("Tipo")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.Property<int>("TipoTransacao")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
-                    b.Property<float>("ValorVenda")
-                        .HasColumnType("real");
+                    b.Property<double>("ValorVenda")
+                        .HasColumnType("double precision");
 
                     b.HasKey("Id");
 
@@ -545,6 +644,25 @@ namespace SistemaLirios.Migrations
                         .IsRequired();
 
                     b.Navigation("TipoServico");
+                });
+
+            modelBuilder.Entity("SistemaLirios.Models.InventarioDetalhesModel", b =>
+                {
+                    b.HasOne("SistemaLirios.Models.InventarioModel", "Inventario")
+                        .WithMany()
+                        .HasForeignKey("IdInventario")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("SistemaLirios.Models.ProdutoModel", "Produto")
+                        .WithMany()
+                        .HasForeignKey("IdProduto")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Inventario");
+
+                    b.Navigation("Produto");
                 });
 
             modelBuilder.Entity("SistemaLirios.Models.PagamentoModel", b =>
