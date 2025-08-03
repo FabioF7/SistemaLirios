@@ -9,6 +9,7 @@ using Microsoft.IdentityModel.Tokens;
 using SistemaLirios.Data;
 using SistemaLirios.Repository;
 using SistemaLirios.Repository.Interfaces;
+using Microsoft.OpenApi.Models;
 using System.Text;
 
 namespace SistemaLirios
@@ -46,7 +47,20 @@ namespace SistemaLirios
             services.AddScoped<IInventarioRepository, InventarioRepository>();
             services.AddScoped<IInventarioDetallhesRepository, InventarioDetallhesRepository>();
 
-            services.AddSwaggerGen();
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new OpenApiInfo
+                {
+                    Title = "SistemaLirios API",
+                    Version = "v1",
+                    Description = "API para o sistema de gerenciamento Lirios",
+                    Contact = new OpenApiContact
+                    {
+                        Name = "Seu Nome",
+                        Email = "seu.email@dominio.com"
+                    }
+                });
+            });
 
             services.AddAuthentication(x =>
             {
@@ -70,8 +84,17 @@ namespace SistemaLirios
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            if (env.IsDevelopment())
+            {
+                app.UseDeveloperExceptionPage();
+            }
+
             app.UseSwagger();
-            app.UseSwaggerUI();
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "SistemaLirios API V1");
+                c.RoutePrefix = string.Empty; // Define o Swagger UI como a página inicial
+            });
 
             app.UseHttpsRedirection();
 

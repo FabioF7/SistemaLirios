@@ -1,8 +1,10 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json.Linq;
 using SistemaLirios.Models;
 using SistemaLirios.Repository;
 using SistemaLirios.Repository.Interfaces;
+using System.Security.Claims;
 
 namespace SistemaLirios.Controllers
 {
@@ -15,6 +17,21 @@ namespace SistemaLirios.Controllers
         public InventarioController(IInventarioRepository InventarioRepository)
         {
             _InventarioRepository = InventarioRepository;
+        }
+
+        [HttpGet("GetUserName")]
+        [Authorize]
+        public IActionResult GetUserName()
+        {
+            // Obtém a claim do nome do usuário
+            var userName = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Name)?.Value;
+
+            if (string.IsNullOrEmpty(userName))
+            {
+                return NotFound("Nome do usuário não encontrado no token.");
+            }
+
+            return Ok(new { UserName = userName });
         }
 
         [HttpGet()]
@@ -88,6 +105,35 @@ namespace SistemaLirios.Controllers
             {
                 InventarioModel.Id = id;
                 InventarioModel Inventario = await _InventarioRepository.Update(InventarioModel, id);
+
+                if (Inventario == null)
+                {
+                    return BadRequest("Não foi possível alterar Inventario!");
+                }
+
+                return Ok(Inventario);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest($"Ocorreu um Erro: {ex}");
+            }
+        }
+
+        [Authorize(Roles = "Admin")]
+        public async Task<ActionResult<InventarioModel>> Aprovar([FromBody] InventarioDetalhesModel inventarioDetalhesModel)
+        {
+            var userName = GetUserName();
+            try
+            {
+                InventarioModel Inventario = await _InventarioRepository.BuscarPorId((int)inventarioDetalhesModel.IdInventario);
+
+                Inventario.Situacao = "Completo";
+                Inventario.Concluido = DateTime.Now;
+                Inventario.Revisado_por = userName.ToString();
+
+                Inventario = await _InventarioRepository.Update(Inventario, (int)inventarioDetalhesModel.IdInventario);
+
+                //após atualização dos dados acima, atualizar as quantidades dos produtos em inventarioDetalhes
 
                 if (Inventario == null)
                 {
