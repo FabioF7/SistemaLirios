@@ -8,8 +8,8 @@
         public virtual OrigemModel? Origem { get; set; }
         public string? Codigo { get; set; }
         public Int64? CodigoDeBarra { get; set; }
-        public float ValorCusto { get; set; }
-        public float ValorVendaRevista { get; set; }
+        public double ValorCusto { get; set; }
+        public double ValorVendaRevista { get; set; }
         public int? IdCategoria { get; set; } //Verificar se irá criar Enum
         public int Quantidade { get; set; }
         public string? CadastradoPor { get; set; }

@@ -1,8 +1,4 @@
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
-using SistemaLirios.Data;
-using SistemaLirios.Repository;
-using SistemaLirios.Repository.Interfaces;
+using Microsoft.AspNetCore;
 
 namespace SistemaLirios
 {
@@ -10,28 +6,15 @@ namespace SistemaLirios
     {
         public static void Main(string[] args)
         {
-            CreateHostBuilder(args).Build().Run();
+           BuildWebHost(args).Run();
         }
 
-        public static IHostBuilder CreateHostBuilder(string[] args)
+        public static IWebHost BuildWebHost(string[] args)
         {
-            var port = Environment.GetEnvironmentVariable("PORT") ?? "8080";
-            var environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") ?? "Development";
-
-            if (environment == "Development")
-            {
-                return Host.CreateDefaultBuilder(args)
-                    .ConfigureWebHostDefaults(webBuilder => { webBuilder.UseStartup<Startup>(); });
-            }
-            else
-            {
-                var url = new[]
-                {
-                    string.Concat("http://0.0.0.0:", port)
-                };
-                return Host.CreateDefaultBuilder(args)
-                    .ConfigureWebHostDefaults(webBuilder => { webBuilder.UseStartup<Startup>().UseUrls(url); });
-            }
+            return WebHost.CreateDefaultBuilder(args)
+                .UseStartup<Startup>()
+                .UseIISIntegration()
+                .Build();
         }
     }
 }

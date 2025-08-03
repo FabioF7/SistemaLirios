@@ -8,7 +8,7 @@ namespace SistemaLirios.Repository.Interfaces
         Task<PagamentoModel> BuscarPorId(int id);
         Task<List<PagamentoModel>> BuscarPorIdCliente(int id);
 
-        float RetornaDivida(List<PagamentoModel> pagamento, List<VendaModel> venda);
+        Task<double> RetornaDivida(List<PagamentoModel> pagamento, List<VendaModel> venda);
 
         Task<PagamentoModel> Insert(PagamentoModel pagamento);
         Task<PagamentoModel> Update(PagamentoModel pagamento, int id);

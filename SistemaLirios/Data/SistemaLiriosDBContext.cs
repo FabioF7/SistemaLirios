@@ -1,14 +1,16 @@
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SistemaLirios.Data.Map;
 using SistemaLirios.Models;
+using System;
 
 namespace SistemaLirios.Data
 {
     public class SistemaLiriosDBContext : DbContext
     {
-        public SistemaLiriosDBContext(DbContextOptions<SistemaLiriosDBContext> options) 
-            : base(options) 
-        { 
+        public SistemaLiriosDBContext(DbContextOptions<SistemaLiriosDBContext> options)
+            : base(options)
+        {
         }
 
         public DbSet<ClienteModel> Cliente { get; set; }
@@ -22,6 +24,9 @@ namespace SistemaLirios.Data
         public DbSet<TipoServicoModel> TipoServico { get; set; }
         public DbSet<UsuarioModel> Usuario { get; set; }
         public DbSet<VendaModel> Venda { get; set; }
+        public DbSet<HistoricoModel> Historico { get; set; }
+        public DbSet<InventarioDetalhesModel> InventarioDetalhes { get; set; }
+        public DbSet<InventarioModel> Inventario { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -36,8 +41,33 @@ namespace SistemaLirios.Data
             modelBuilder.ApplyConfiguration(new TipoServicoMap());
             modelBuilder.ApplyConfiguration(new UsuarioMap());
             modelBuilder.ApplyConfiguration(new PerfilMap());
+            modelBuilder.ApplyConfiguration(new InventarioMap());
+            modelBuilder.ApplyConfiguration(new InventarioDetalhesMap());
+            modelBuilder.Entity<HistoricoModel>().HasNoKey();
+
+            // Converter datas para UTC ao salvar
+            foreach (var entityType in modelBuilder.Model.GetEntityTypes())
+            {
+                foreach (var property in entityType.GetProperties())
+                {
+                    if (property.ClrType == typeof(DateTime) || property.ClrType == typeof(DateTime?))
+                    {
+                        property.SetValueConverter(new DateTimeConverter());
+                    }
+                }
+            }
 
             base.OnModelCreating(modelBuilder);
+        }
+    }
+
+    // Classe auxiliar para converter datas para UTC
+    internal class DateTimeConverter : ValueConverter<DateTime, DateTime>
+    {
+        public DateTimeConverter() : base(
+            v => v.Kind == DateTimeKind.Unspecified ? DateTime.SpecifyKind(v, DateTimeKind.Utc) : v.ToUniversalTime(),
+            v => DateTime.SpecifyKind(v, DateTimeKind.Utc))
+        {
         }
     }
 }

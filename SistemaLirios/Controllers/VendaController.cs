@@ -78,9 +78,9 @@ namespace SistemaLirios.Controllers
             }
         }
 
-        [HttpPost("{valorPago}")]
+        [HttpPost("{valorPago?}")]
         [Authorize(Roles = "Admin")]
-        public async Task<ActionResult<IEnumerable<VendaModel>>> Insert([FromBody] List<VendaModel> vendas, string valorPago)
+        public async Task<ActionResult<IEnumerable<VendaModel>>> Insert([FromBody] List<VendaModel> vendas, string? valorPago)
         {
             try
             {

@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using SistemaLirios.Models;
 using SistemaLirios.Repository.Interfaces;
@@ -16,13 +17,17 @@ namespace SistemaLirios.Controllers
     public class UsuarioController : ControllerBase
     {
         private readonly IUsuarioRepository _usuarioRepository;
-        public UsuarioController(IUsuarioRepository usuarioRepository) 
+
+        private readonly IConfiguration _configuration;
+
+        public UsuarioController(IUsuarioRepository usuarioRepository, IConfiguration configuration) 
         {
             _usuarioRepository = usuarioRepository;
+            _configuration = configuration;
         }
 
         [HttpPost]
-        [Authorize (Roles = "Admin")]
+        [Authorize(Roles = "Admin")]
         public async Task<ActionResult<UsuarioModel>> Insert([FromBody] UsuarioRequest usuarioRequest)
         {
             try
@@ -167,9 +172,9 @@ namespace SistemaLirios.Controllers
                     {
                     new Claim(ClaimTypes.Name, usuario.Usuario),
                     new Claim(ClaimTypes.Role, usuario.Perfil.NomePerfil)
-                    };
+                };
 
-                var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Environment.GetEnvironmentVariable("CHAVE_SECRETA_JWT")));
+                var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration.GetSection("Chave_JWT")["CHAVE_SECRETA_JWT"]));
 
                 var cred = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);
 

@@ -22,20 +22,20 @@ namespace SistemaLirios.Repository
 
         public async Task<List<VendaModel>> BuscarTodosVendas()
         {
-            return await _dbContext.Venda.ToListAsync();
+            return await _dbContext.Venda.Include(v => v.Cliente).Include(v => v.Produto).OrderByDescending(v => v.IdVenda).ToListAsync();
         }
 
         public async Task<VendaModel> BuscarPorId(int id)
         {
-            return await _dbContext.Venda.FirstOrDefaultAsync(x => x.Id == id) ?? throw new Exception($"Venda {id} não encontrado no banco de dados");
+            return await _dbContext.Venda.Include(u => u.Cliente).Include(u => u.Produto).FirstOrDefaultAsync(x => x.Id == id) ?? throw new Exception($"Venda {id} não encontrado no banco de dados");
         }
 
         public async Task<List<VendaModel>> BuscarPorIdCliente(int id)
         {
-            return await _dbContext.Venda.Where(x => x.ClienteId == id).ToListAsync() ?? throw new Exception($"Vendas para o Cliente {id} não encontradas no banco de dados");
+            return await _dbContext.Venda.Include(u => u.Cliente).Include(u => u.Produto).Where(x => x.ClienteId == id).ToListAsync() ?? throw new Exception($"Vendas para o Cliente {id} não encontradas no banco de dados");
         }
 
-        public async Task<List<VendaModel>> Insert(List<VendaModel> vendas, string valorPago)
+        public async Task<List<VendaModel>> Insert(List<VendaModel> vendas, string? valorPago)
         {
             int ultimoIdNoBanco = await _dbContext.Venda.MaxAsync(v => (int?)v.IdVenda) ?? 0;
 

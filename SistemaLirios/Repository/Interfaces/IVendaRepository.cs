@@ -8,7 +8,7 @@ namespace SistemaLirios.Repository.Interfaces
         Task<VendaModel> BuscarPorId(int id);
         Task<List<VendaModel>> BuscarPorIdCliente(int id);
 
-        Task<List<VendaModel>> Insert(List<VendaModel> vendas, string valorPago);
+        Task<List<VendaModel>> Insert(List<VendaModel> vendas, string? valorPago);
         Task<VendaModel> Update(VendaModel Venda, int id);
 
         Task<bool> Delete(int id);

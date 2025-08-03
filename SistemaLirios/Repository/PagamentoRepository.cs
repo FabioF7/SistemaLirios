@@ -10,10 +10,13 @@ namespace SistemaLirios.Repository
     {
 
         private readonly SistemaLiriosDBContext _dbContext;
+        private readonly IClienteRepository _clienteRepository;
 
-        public PagamentoRepository(SistemaLiriosDBContext sistemaLirioDBContext)
+
+        public PagamentoRepository(SistemaLiriosDBContext sistemaLirioDBContext, IClienteRepository clienteRepository)
         {
             _dbContext = sistemaLirioDBContext;
+            _clienteRepository = clienteRepository;
         }
 
         public async Task<List<PagamentoModel>> BuscarTodosPagamentos()
@@ -64,32 +67,66 @@ namespace SistemaLirios.Repository
             return true;
         }
 
-        public float RetornaDivida(List<PagamentoModel> pagamento, List<VendaModel> venda)
+        public async Task<double> RetornaDivida(List<PagamentoModel> pagamento, List<VendaModel> venda)
         {
-            float valorGasto = 0.00f;
-            float valorPago = 0.00f;
-            
-            foreach (var vendas in venda)
+            if (pagamento.Count > 0 && venda.Count > 0)
             {
-                if (vendas.TipoTransacao == 0)
+                double valorGasto = 0.00f;
+                double valorPago = 0.00f;
+
+                foreach (var vendas in venda)
                 {
-                    valorGasto += vendas.ValorVenda;
+                    if (vendas.TipoTransacao == 0)
+                    {
+                        valorGasto += vendas.ValorVenda * vendas.Quantidade;
+                    }
                 }
+
+                foreach (var pagamentos in pagamento)
+                {
+                    if (pagamentos.TipoTransacao == 0)
+                    {
+                        valorPago += pagamentos.ValorPago;
+                    }
+                    else
+                    {
+                        valorPago -= pagamentos.ValorPago;
+                    }
+                }
+
+                double result = 0.00f;
+                result = valorGasto - valorPago;
+                string formatado = result.ToString("F2");
+                result = double.Parse(formatado);
+
+                AtualizaInadimplencia(result, venda.FirstOrDefault().ClienteId);
+
+                return await Task.FromResult(result);
             }
 
-            foreach (var pagamentos in pagamento)
-            {
-                if (pagamentos.TipoTransacao == 0)
-                {
-                    valorPago += pagamentos.ValorPago;
-                }
-                else
-                {
-                    valorPago -= pagamentos.ValorPago;
-                }
-            }
-
-            return valorGasto - valorPago;
+            return await Task.FromResult(0);
         }
+
+        public async void AtualizaInadimplencia(double result, int id)
+        {
+            if (result > 0)
+            {
+                ClienteModel cliente = new ClienteModel();
+
+                cliente.Inadimplencia = 1;
+
+                await _clienteRepository.Update(cliente, id);
+            }
+            else if (result == 0)
+            {
+                ClienteModel cliente = new ClienteModel();
+
+                cliente.Inadimplencia = 0;
+
+                await _clienteRepository.Update(cliente, id);
+            }
+        }
+
+
     }
 }

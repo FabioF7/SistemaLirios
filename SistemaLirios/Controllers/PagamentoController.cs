@@ -81,7 +81,7 @@ namespace SistemaLirios.Controllers
                     return BadRequest($"Vendas para o Cliente {id} não encontradas!");
                 }
 
-                return Ok(_pagamentoRepository.RetornaDivida(pagamento, venda));
+                return Ok(await _pagamentoRepository.RetornaDivida(pagamento, venda));
 
             }
             catch (Exception ex)
@@ -97,6 +97,8 @@ namespace SistemaLirios.Controllers
             try
             {
                 PagamentoModel pagamento = await _pagamentoRepository.Insert(pagamentoModel);
+
+                await this.RetornaDivida(pagamentoModel.ClienteId);
 
                 if (pagamento == null)
                 {
